@@ -1,43 +1,41 @@
-document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
+// Mobile menu
+const menuBtn = document.getElementById("menuBtn");
+const navLinks = document.getElementById("navLinks");
+const links = document.querySelectorAll(".nav-link");
 
-  // Handle Mobile Menu
-  const menuBtn = document.getElementById("menuBtn");
-  const navLinks = document.getElementById("navLinks");
-  const links = document.querySelectorAll(".nav-link");
-
+if (menuBtn && navLinks) {
   menuBtn.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
-    // Change icon between menu and x
-    const icon = menuBtn.querySelector('i');
-    if (navLinks.classList.contains("open")) {
-        icon.setAttribute('data-lucide', 'x');
-    } else {
-        icon.setAttribute('data-lucide', 'menu');
-    }
-    lucide.createIcons();
+    const isOpen = navLinks.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", String(isOpen));
   });
+}
 
-  // Close menu when clicking a link
-  links.forEach(link => {
-    link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        menuBtn.querySelector('i').setAttribute('data-lucide', 'menu');
-        lucide.createIcons();
-    });
+// Close mobile menu on click
+links.forEach((a) => {
+  a.addEventListener("click", () => {
+    navLinks?.classList.remove("open");
+    menuBtn?.setAttribute("aria-expanded", "false");
   });
-
-  // Scroll Reveal Observer
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("active");
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
-
-  // Auto Update Year
-  document.getElementById("year").textContent = new Date().getFullYear();
 });
+
+// Active link on scroll
+const sections = document.querySelectorAll("section[id]");
+function setActive() {
+  const y = window.scrollY + 140;
+
+  sections.forEach((sec) => {
+    const top = sec.offsetTop;
+    const height = sec.offsetHeight;
+    const id = sec.getAttribute("id");
+
+    if (y >= top && y < top + height) {
+      links.forEach((l) => l.classList.remove("active"));
+      document.querySelector(`.nav-link[href="#${id}"]`)?.classList.add("active");
+    }
+  });
+}
+window.addEventListener("scroll", setActive);
+setActive();
+
+// Footer year
+document.getElementById("year").textContent = String(new Date().getFullYear());
