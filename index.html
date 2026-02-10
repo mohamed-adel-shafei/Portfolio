@@ -4,30 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mohamed Adel Shafei | Electrical Site Engineer</title>
-  <meta name="description" content="Professional Portfolio of Mohamed Adel Shafei, Electrical Site Engineer specializing in execution, shop drawings, and MEP coordination.">
-  
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap">
-  <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <div class="mesh-bg"></div>
-
+  <!-- NAVBAR -->
   <header class="header">
     <nav class="nav container">
-      <a class="logo" href="#home">M.ADEL<span>.</span></a>
+      <a class="logo" href="#home">Mohamed<span>.</span></a>
 
-      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
-        <i data-lucide="menu"></i>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
       </button>
 
       <ul class="nav-links" id="navLinks">
         <li><a href="#home" class="nav-link active">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#skills" class="nav-link">Skills</a></li>
         <li><a href="#projects" class="nav-link">Projects</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
@@ -35,112 +27,298 @@
   </header>
 
   <main>
-    <!-- HERO SECTION -->
-    <section class="section home reveal" id="home">
+    <!-- HOME -->
+    <section class="section home" id="home">
       <div class="container home-grid">
         <div class="home-text">
-          <div class="pill"><span class="pulse"></span> Available for Projects</div>
+          <p class="pill">My Portfolio</p>
+
           <h1 class="title">
-            Engineering <span class="accent">Precision</span><br />
-            On Every Site.
+            Hi, I'm <span class="accent">Mohamed Adel</span><br />
+            <span class="role">Electrical Engineer</span>
           </h1>
+
           <p class="subtitle">
-            I am <strong>Mohamed Adel Shafei</strong>. An Electrical Site Engineer focused on turning complex shop drawings into flawless on-site execution.
+            Electrical Site Engineer with hands-on experience in site execution, shop drawings compliance,
+            coordination, and safety on construction projects.
           </p>
 
-          <div class="btn-group">
-            <a class="btn primary" href="#contact">Hire Me <i data-lucide="mail"></i></a>
-            <!-- RESUME DOWNLOAD BUTTON -->
-            <a class="btn ghost" href="Mohamed-Adel-CV.pdf" download="Mohamed-Adel-Shafei-CV">
-                Download CV <i data-lucide="download"></i>
+          <div class="btn-row">
+            <a class="btn primary" href="#projects">View Projects</a>
+
+            <!-- CV Download (your file name has a space before .pdf) -->
+            <a class="btn ghost" href="Mohamed-Adel-CV%20.pdf" download>
+              Download CV
             </a>
+
+            <a class="btn ghost" href="#contact">Contact Me</a>
           </div>
 
-          <div class="stats">
-            <div class="stat-item">
-              <span class="stat-num">BSc.</span>
-              <span class="stat-label">Electrical Power</span>
+          <div class="mini">
+            <div class="mini-card">
+              <div class="mini-num">Site</div>
+              <div class="mini-label">Execution</div>
             </div>
-            <div class="stat-item">
-              <span class="stat-num">A+</span>
-              <span class="stat-label">Graduation Project</span>
+            <div class="mini-card">
+              <div class="mini-num">Shop</div>
+              <div class="mini-label">Drawings</div>
             </div>
-            <div class="stat-item">
-              <span class="stat-num">MEP</span>
-              <span class="stat-label">Coordination</span>
+            <div class="mini-card">
+              <div class="mini-num">Electrical</div>
+              <div class="mini-label">Installations</div>
             </div>
           </div>
         </div>
 
-        <div class="profile-display">
-          <div class="glass-card">
-            <div class="avatar-container">
-              <div class="avatar-glow"></div>
-              <!-- Ensure your image is named profile.jpg -->
-              <img src="profile.jpg" alt="Mohamed Adel Shafei" class="avatar-img" onerror="this.src='https://images.unsplash.com/photo-1581094483879-c5c037559640?q=80&w=400&h=400&auto=format&fit=crop'">
-            </div>
-            <div class="profile-info">
-              <h3>Mohamed Adel</h3>
-              <p>Electrical Site Engineer</p>
-              <div class="social-row">
-                <a href="https://linkedin.com/in/mohamed-adel-shafei" target="_blank"><i data-lucide="linkedin"></i></a>
-                <a href="mailto:mohamedadelshafei20@gmail.com"><i data-lucide="mail"></i></a>
-                <a href="https://wa.me/201018559587" target="_blank"><i data-lucide="phone"></i></a>
-              </div>
-            </div>
+        <div class="profile-card">
+          <div class="avatar-ring">
+            <div class="avatar" aria-hidden="true"></div>
+          </div>
+
+          <h2 class="card-name">Mohamed Adel Shafei</h2>
+          <p class="card-job">Electrical Site Engineer</p>
+
+          <div class="tags">
+            <span class="tag">Site Supervision</span>
+            <span class="tag">MEP Projects</span>
+            <span class="tag">Coordination</span>
+            <span class="tag">Safety</span>
+          </div>
+
+          <!-- ICON LINKS -->
+          <div class="quick-links icons">
+            <a class="icon-link" href="mailto:mohamedadelshafei20@gmail.com" aria-label="Gmail">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4.2-8 5-8-5V6l8 5 8-5v2.2Z"></path>
+              </svg>
+              Gmail
+            </a>
+
+            <a class="icon-link" href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6.94 6.5A2.44 2.44 0 1 1 6.94 1.6a2.44 2.44 0 0 1 0 4.9ZM2.8 22h4.3V8.3H2.8V22ZM9.6 8.3h4.1v1.9h.1c.6-1.1 2-2.2 4.1-2.2 4.4 0 5.2 2.9 5.2 6.6V22h-4.3v-6.2c0-1.5 0-3.5-2.1-3.5s-2.4 1.7-2.4 3.4V22H9.6V8.3Z"></path>
+              </svg>
+              LinkedIn
+            </a>
+
+            <a class="icon-link" href="https://github.com/mohamed-adel-shafei" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 .7a11.3 11.3 0 0 0-3.6 22c.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.8 1.7 1.6 2.1.6.4 1.3.3 1.9.2.1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17 5.6 18 5.9 18 5.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.6-2.7 5.6-5.3 5.9.4.3.8 1 .8 2.1v3.1c0 .4.2.7.8.6A11.3 11.3 0 0 0 12 .7Z"></path>
+              </svg>
+              GitHub
+            </a>
+
+            <a class="icon-link" href="https://wa.me/201018559587" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20.5 3.6A11 11 0 0 0 3.2 17.9L2 22l4.3-1.1A11 11 0 0 0 20.5 3.6Zm-9.5 18a9.1 9.1 0 0 1-4.6-1.2l-.3-.2-2.6.7.7-2.5-.2-.3A9.2 9.2 0 1 1 11 21.6Zm5.3-6.6c-.3-.2-1.6-.8-1.9-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.4-1.6-.9-.8-1.5-1.9-1.6-2.2-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.1-.3.2-.5 0-.2 0-.4-.1-.5-.1-.2-.7-1.7-1-2.3-.3-.6-.6-.5-.7-.5h-.6c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.9 4.2.7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.2.2-.6.2-1.1.1-1.2-.1-.2-.3-.2-.6-.4Z"></path>
+              </svg>
+              WhatsApp
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ... (About, Skills, and Projects sections remain the same as previous) ... -->
-
-    <!-- CONTACT SECTION WITH FORMSPREE -->
-    <section class="section reveal" id="contact">
+    <!-- ABOUT -->
+    <section class="section" id="about">
       <div class="container">
-        <div class="glass contact-wrapper">
-          <div class="contact-info">
-            <h2 class="section-title">Let's <span class="accent">Connect</span></h2>
-            <p>Ready to discuss your next project or engineering role. I typically respond within 24 hours.</p>
-            
-            <div class="c-item">
-              <i data-lucide="map-pin"></i>
-              <span>Cairo, Egypt</span>
-            </div>
-            <div class="c-item">
-              <i data-lucide="mail"></i>
-              <span>mohamedadelshafei20@gmail.com</span>
-            </div>
-            <div class="c-item">
-              <i data-lucide="message-circle"></i>
-              <span>+20 101 855 9587</span>
-            </div>
+        <h2 class="section-title">About <span class="accent">Me</span></h2>
+        <p class="section-desc">
+          I’m Mohamed Adel Shafei, an Electrical Site Engineer focused on supervising electrical installations,
+          ensuring compliance with shop drawings, coordinating with other disciplines, and maintaining safety standards.
+        </p>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>What I Do</h3>
+            <ul>
+              <li>Supervise on-site electrical installations (cables, trays, panels, lighting, etc.)</li>
+              <li>Follow approved shop drawings and report site deviations</li>
+              <li>Coordinate with civil / mechanical teams to avoid clashes</li>
+              <li>Support testing & commissioning activities</li>
+              <li>Maintain safety compliance and quality checks</li>
+            </ul>
           </div>
 
-          <!-- FORMSPREE INTEGRATION -->
-          <form class="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-            <div class="input-group">
-              <input type="text" name="full_name" placeholder="Full Name" required>
+          <div class="panel">
+            <h3>Highlights</h3>
+            <ul>
+              <li>BSc Electrical Power & Control Engineering — Benha University</li>
+              <li>Graduation Project: SCADA & IoT control for pumping units (A+)</li>
+              <li>Strong exposure to Technical Office & Shop Drawings</li>
+              <li>Interested in roles: Site / Technical Office / Design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="container">
+        <h2 class="section-title">Projects <span class="accent">Portfolio</span></h2>
+        <p class="section-desc">
+          Selected projects and experiences (summary style). You can replace/expand them later with real photos and details.
+        </p>
+
+        <div class="cards">
+          <article class="card">
+            <h3>
+              Graduation Project :
+              “ Energy and Water Consumption Rationalization for A Motorized Pumping Unit Fed by Solar Cells System using SCADA and IOT Control Systems ”.
+            </h3>
+            <p>
+              Graduation project focused on designing and implementing a smart, energy-efficient water pumping system integrating Solar PV, PLC/SCADA, and IoT technologies.
+            </p>
+            <div class="card-bottom">
+              <div class="badge-wrap">
+                <span class="badge">Classic Control</span>
+                <span class="badge">PLC</span>
+                <span class="badge">HMI</span>
+                <span class="badge">SCADA</span>
+                <span class="badge">PV Systems</span>
+                <span class="badge">IoT</span>
+              </div>
+              <a class="link details-link" href="#contact">Request Details →</a>
             </div>
-            <div class="input-group">
-              <input type="email" name="email" placeholder="Email Address" required>
+          </article>
+
+          <article class="card">
+            <h3>Construction Site Electrical Execution</h3>
+            <p>
+              Supervised electrical works on-site, ensured compliance with shop drawings, coordinated installations,
+              and followed safety and quality standards.
+            </p>
+            <div class="card-bottom">
+              <div class="badge-wrap">
+                <span class="badge">Site Execution</span>
+              </div>
+              <a class="link details-link" href="#contact">Request Details →</a>
             </div>
-            <div class="input-group">
-              <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+          </article>
+
+          <article class="card">
+            <h3>Eduneers Advanced Diploma</h3>
+            <p>
+              Practical exposure to electrical design basics, shop drawings preparation, and light current systems
+              with BOQ/tendering fundamentals.
+            </p>
+            <div class="card-bottom">
+              <div class="badge-wrap">
+                <span class="badge">Electrical Design</span>
+                <span class="badge">Shop Drawings</span>
+                <span class="badge">Light Current</span>
+              </div>
+              <a class="link details-link" href="#contact">Request Details →</a>
             </div>
-            <button class="btn primary full-width" type="submit">Send Message</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact <span class="accent">Me</span></h2>
+        <p class="section-desc">
+          Feel free to reach out for opportunities, collaboration, or project discussions.
+        </p>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Contact Details</h3>
+
+            <p class="contact-line">
+              <span class="c-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4.2-8 5-8-5V6l8 5 8-5v2.2Z"></path></svg>
+              </span>
+              <strong>Email:</strong>
+              <a class="link" href="mailto:mohamedadelshafei20@gmail.com">mohamedadelshafei20@gmail.com</a>
+            </p>
+
+            <p class="contact-line">
+              <span class="c-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6.94 6.5A2.44 2.44 0 1 1 6.94 1.6a2.44 2.44 0 0 1 0 4.9ZM2.8 22h4.3V8.3H2.8V22ZM9.6 8.3h4.1v1.9h.1c.6-1.1 2-2.2 4.1-2.2 4.4 0 5.2 2.9 5.2 6.6V22h-4.3v-6.2c0-1.5 0-3.5-2.1-3.5s-2.4 1.7-2.4 3.4V22H9.6V8.3Z"></path></svg>
+              </span>
+              <strong>LinkedIn:</strong>
+              <a class="link" href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank" rel="noopener">
+                mohamed-adel-shafei
+              </a>
+            </p>
+
+            <p class="contact-line">
+              <span class="c-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 .7a11.3 11.3 0 0 0-3.6 22c.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.8 1.7 1.6 2.1.6.4 1.3.3 1.9.2.1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17 5.6 18 5.9 18 5.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.6-2.7 5.6-5.3 5.9.4.3.8 1 .8 2.1v3.1c0 .4.2.7.8.6A11.3 11.3 0 0 0 12 .7Z"></path></svg>
+              </span>
+              <strong>GitHub:</strong>
+              <a class="link" href="https://github.com/mohamed-adel-shafei" target="_blank" rel="noopener">
+                mohamed-adel-shafei
+              </a>
+            </p>
+
+            <p class="contact-line">
+              <span class="c-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20.5 3.6A11 11 0 0 0 3.2 17.9L2 22l4.3-1.1A11 11 0 0 0 20.5 3.6Zm-9.5 18a9.1 9.1 0 0 1-4.6-1.2l-.3-.2-2.6.7.7-2.5-.2-.3A9.2 9.2 0 1 1 11 21.6Zm5.3-6.6c-.3-.2-1.6-.8-1.9-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.4-1.6-.9-.8-1.5-1.9-1.6-2.2-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.1-.3.2-.5 0-.2 0-.4-.1-.5-.1-.2-.7-1.7-1-2.3-.3-.6-.6-.5-.7-.5h-.6c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.9 4.2.7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.2.2-.6.2-1.1.1-1.2-.1-.2-.3-.2-.6-.4Z"></path></svg>
+              </span>
+              <strong>WhatsApp:</strong>
+              <a class="link" href="https://wa.me/201018559587" target="_blank" rel="noopener">
+                +20 101 855 9587
+              </a>
+            </p>
+
+            <p class="contact-line">
+              <span class="c-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2a7.5 7.5 0 0 0-7.5 7.5c0 5.6 7.5 12.5 7.5 12.5s7.5-6.9 7.5-12.5A7.5 7.5 0 0 0 12 2Zm0 10.2a2.7 2.7 0 1 1 0-5.4 2.7 2.7 0 0 1 0 5.4Z"></path></svg>
+              </span>
+              <strong>Location:</strong> Cairo, Egypt
+            </p>
+          </div>
+
+          <form class="panel form" onsubmit="return false;">
+            <label>
+              Name
+              <input type="text" placeholder="Your name" />
+            </label>
+
+            <label>
+              Email
+              <input type="email" placeholder="your@email.com" />
+            </label>
+
+            <label>
+              Message
+              <textarea rows="4" placeholder="Write your message..."></textarea>
+            </label>
+
+            <button class="btn primary" type="submit">Send Message</button>
+            <p class="note">This form is front-end only for now.</p>
           </form>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- FOOTER (simple & clean) -->
   <footer class="footer">
     <div class="container footer-row">
-      <p>&copy; <span id="year"></span> Mohamed Adel Shafei. Built for 2026 Standards.</p>
-      <div class="footer-links">
-        <a href="#home" class="link-up">Top <i data-lucide="chevron-up"></i></a>
+      <span>© <span id="year"></span> Mohamed Adel Shafei</span>
+
+      <div class="footer-icons">
+        <a class="footer-icon" href="mailto:mohamedadelshafei20@gmail.com" aria-label="Gmail" title="Gmail">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4.2-8 5-8-5V6l8 5 8-5v2.2Z"></path></svg>
+        </a>
+        <a class="footer-icon" href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M6.94 6.5A2.44 2.44 0 1 1 6.94 1.6a2.44 2.44 0 0 1 0 4.9ZM2.8 22h4.3V8.3H2.8V22ZM9.6 8.3h4.1v1.9h.1c.6-1.1 2-2.2 4.1-2.2 4.4 0 5.2 2.9 5.2 6.6V22h-4.3v-6.2c0-1.5 0-3.5-2.1-3.5s-2.4 1.7-2.4 3.4V22H9.6V8.3Z"></path></svg>
+        </a>
+        <a class="footer-icon" href="https://github.com/mohamed-adel-shafei" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 .7a11.3 11.3 0 0 0-3.6 22c.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.8 1.7 1.6 2.1.6.4 1.3.3 1.9.2.1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17 5.6 18 5.9 18 5.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.6-2.7 5.6-5.3 5.9.4.3.8 1 .8 2.1v3.1c0 .4.2.7.8.6A11.3 11.3 0 0 0 12 .7Z"></path></svg>
+        </a>
+        <a class="footer-icon" href="https://wa.me/201018559587" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M20.5 3.6A11 11 0 0 0 3.2 17.9L2 22l4.3-1.1A11 11 0 0 0 20.5 3.6Zm-9.5 18a9.1 9.1 0 0 1-4.6-1.2l-.3-.2-2.6.7.7-2.5-.2-.3A9.2 9.2 0 1 1 11 21.6Zm5.3-6.6c-.3-.2-1.6-.8-1.9-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.4-1.6-.9-.8-1.5-1.9-1.6-2.2-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.1-.3.2-.5 0-.2 0-.4-.1-.5-.1-.2-.7-1.7-1-2.3-.3-.6-.6-.5-.7-.5h-.6c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.4 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.9 4.2.7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.2.2-.6.2-1.1.1-1.2-.1-.2-.3-.2-.6-.4Z"></path></svg>
+        </a>
       </div>
+
+      <a class="link" href="#home">Back to top ↑</a>
     </div>
   </footer>
 
