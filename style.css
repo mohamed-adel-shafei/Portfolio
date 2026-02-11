@@ -1,11 +1,10 @@
 :root{
-  /* Navy style like your screenshot */
-  --bg-1:#0b2233;      /* darkest */
-  --bg-2:#0f2a3d;      /* main */
-  --bg-3:#12344d;      /* section */
+  --bg-1:#0b2233;
+  --bg-2:#0f2a3d;
+  --bg-3:#12344d;
   --line:rgba(255,255,255,0.10);
 
-  --accent:#24b8ff;    /* cyan/blue highlight */
+  --accent:#24b8ff;
   --accent-2:#5ee7ff;
 
   --text:#ffffff;
@@ -244,7 +243,6 @@ body{
   border: 2px solid rgba(255,255,255,0.25);
 }
 
-
 .card-name{ margin:6px 0 0; font-size: 20px; }
 .card-job{ margin:0; color: var(--muted); }
 
@@ -296,9 +294,16 @@ body{
 .card p{ margin:0 0 14px; color: var(--muted); line-height: 1.7; }
 .card-bottom{
   display:flex;
-  align-items:center;
+  align-items:flex-end;
   justify-content:space-between;
   gap:10px;
+  flex-wrap:wrap;
+}
+
+.badges-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
 .badge{
@@ -317,6 +322,65 @@ body{
   font-weight: 800;
 }
 .link:hover{ text-decoration: underline; }
+
+/* Project title styling */
+.project-title{
+  line-height: 1.35;
+}
+.project-accent{
+  color: var(--accent);
+  font-weight: 900;
+}
+
+/* CONTACT ICONS (icons beside text) */
+.contact-icons{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:var(--text);
+  font-weight:700;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.03);
+  transition: 180ms ease;
+}
+
+.contact-item:hover{
+  background:rgba(36,184,255,0.10);
+  transform:translateX(4px);
+}
+
+.icon{
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.08);
+  border:1px solid var(--line);
+  flex:0 0 38px;
+}
+
+.icon img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+}
+
+/* CV button inside contact */
+.cv-btn{
+  margin-top: 6px;
+  width: fit-content;
+}
 
 /* FORM */
 .form label{
@@ -343,7 +407,6 @@ input:focus, textarea:focus{
   color: var(--muted);
   font-size: 13px;
 }
-.contact-line{ margin: 10px 0; }
 
 /* FOOTER */
 .footer{
@@ -358,6 +421,23 @@ input:focus, textarea:focus{
   align-items:center;
   gap: 10px;
   flex-wrap:wrap;
+}
+.footer-links{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+/* Reveal animation */
+.reveal{
+  opacity: 0;
+  transform: translateY(14px);
+  transition: 650ms ease;
+}
+.reveal.show{
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* RESPONSIVE */
@@ -384,52 +464,39 @@ input:focus, textarea:focus{
   .nav-links.open{ display:flex; }
   .nav-link{ padding: 12px; }
 }
+/* ===== Contact Icons (Fix huge icons) ===== */
+.contact-item{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 700;
+}
 
-/* =========================
-   Mobile Responsive
-========================= */
-@media (max-width: 768px){
+/* icon container (fixed size) */
+.contact-item .icon{
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
 
-  /* Layout */
-  .hero{
-    grid-template-columns: 1fr;
-    gap: 24px;
-    text-align: center;
-  }
-
-  /* Text */
-  .hero h1{
-    font-size: 32px;
-  }
-
-  .hero h2{
-    font-size: 22px;
-  }
-
-  .hero p{
-    font-size: 15px;
-  }
-
-  /* Buttons */
-  .hero-buttons{
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* Profile Card */
-  .profile-card{
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  /* Skills / badges */
-  .badges{
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* Sections padding */
-  .section{
-    padding: 48px 16px;
-  }
+/* THE IMPORTANT PART */
+.contact-item .icon img{
+  width: 18px !important;
+  height: 18px !important;
+  max-width: 18px !important;
+  max-height: 18px !important;
+  object-fit: contain !important;
+  display: block !important;
 }
