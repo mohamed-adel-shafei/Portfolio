@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mohamed Adel Shafei | Electrical Site Engineer</title>
+  <title>Mohamed Adel Shafei | Electrical Engineer</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -28,13 +28,13 @@
 
   <main>
     <!-- HOME -->
-    <section class="section home" id="home">
+    <section class="section home reveal" id="home">
       <div class="container home-grid">
         <div class="home-text">
-          <p class="pill"> My Portfolio</p>
+          <p class="pill">Mohamed Adel Portfolio</p>
 
           <h1 class="title">
-            Hi, I'm <span class="accent">Mohamed Adel </span><br />
+            Hi, I'm <span class="accent">Mohamed Adel</span><br />
             <span class="role">Electrical Engineer</span>
           </h1>
 
@@ -43,9 +43,12 @@
             coordination, and safety on construction projects.
           </p>
 
+          <!-- Buttons -->
           <div class="btn-row">
             <a class="btn primary" href="#projects">View Projects</a>
             <a class="btn ghost" href="#contact">Contact Me</a>
+            <!-- CV download -->
+            <a class="btn ghost" href="Mohamed-Adel-CV.pdf" download>Download CV</a>
           </div>
 
           <div class="mini">
@@ -64,7 +67,7 @@
           </div>
         </div>
 
-        <div class="profile-card">
+        <div class="profile-card reveal">
           <div class="avatar-ring">
             <div class="avatar" aria-hidden="true"></div>
           </div>
@@ -74,8 +77,7 @@
 
           <div class="tags">
             <span class="tag">Site Supervision</span>
-                        <span class="tag"> MEP Projects</span>
-
+            <span class="tag">MEP Projects</span>
             <span class="tag">Coordination</span>
             <span class="tag">Safety</span>
           </div>
@@ -83,14 +85,14 @@
           <div class="quick-links">
             <a class="link" href="mailto:mohamedadelshafei20@gmail.com">Email</a>
             <a class="link" href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank" rel="noopener">LinkedIn</a>
-            <a class="link" href="#contact">WhatsApp</a>
+            <a class="link" href="https://wa.me/201018559587" target="_blank" rel="noopener">WhatsApp</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ABOUT -->
-    <section class="section" id="about">
+    <section class="section reveal" id="about">
       <div class="container">
         <h2 class="section-title">About <span class="accent">Me</span></h2>
         <p class="section-desc">
@@ -124,7 +126,7 @@
     </section>
 
     <!-- PROJECTS -->
-    <section class="section" id="projects">
+    <section class="section reveal" id="projects">
       <div class="container">
         <h2 class="section-title">Projects <span class="accent">Portfolio</span></h2>
         <p class="section-desc">
@@ -133,19 +135,26 @@
 
         <div class="cards">
           <article class="card">
-            <h3> Graduation Project :
-                 
-                “ Energy and Water Consumption Rationalization for A Motorized Pumping Unit Fed by Solar Cells System using SCADA and IOT Control Systems ”. </h3>
+            <h3 class="project-title">
+              Graduation Project:<br />
+              <span class="project-accent">
+                Energy and Water Consumption Rationalization for A Motorized Pumping Unit Fed by Solar Cells System using SCADA and IOT Control Systems
+              </span>
+            </h3>
+
             <p>
               Graduation project focused on designing and implementing a smart, energy-efficient water pumping system integrating Solar PV, PLC/SCADA, and IoT technologies.
             </p>
+
             <div class="card-bottom">
-              <span class="badge"> Classic Control </span>
-              <span class="badge"> PLC </span>
-              <span class="badge">  HMI </span>
-              <span class="badge">  SCADA </span>
-              <span class="badge">  PV Systems</span>
-                            <span class="badge">  IoT</span>
+              <div class="badges-row">
+                <span class="badge">Classic Control</span>
+                <span class="badge">PLC</span>
+                <span class="badge">HMI</span>
+                <span class="badge">SCADA</span>
+                <span class="badge">PV Systems</span>
+                <span class="badge">IoT</span>
+              </div>
 
               <a class="link" href="#contact">Request Details →</a>
             </div>
@@ -158,23 +167,25 @@
               and followed safety and quality standards.
             </p>
             <div class="card-bottom">
-              <span class="badge">Site Execution</span>
+              <div class="badges-row">
+                <span class="badge">Site Execution</span>
+              </div>
               <a class="link" href="#contact">Request Details →</a>
             </div>
           </article>
 
           <article class="card">
-            <h3> Eduneers Advanced Diploma </h3>
+            <h3>Eduneers Advanced Diploma</h3>
             <p>
               Practical exposure to electrical design basics, shop drawings preparation, and light current systems
               with BOQ/tendering fundamentals.
             </p>
             <div class="card-bottom">
-              <span class="badge">Electrical Design</span>
-              <span class="badge">Shop Drawings</span>
-              <span class="badge">Light Current </span>
-              
-              
+              <div class="badges-row">
+                <span class="badge">Electrical Design</span>
+                <span class="badge">Shop Drawings</span>
+                <span class="badge">Light Current</span>
+              </div>
               <a class="link" href="#contact">Request Details →</a>
             </div>
           </article>
@@ -183,7 +194,7 @@
     </section>
 
     <!-- CONTACT -->
-    <section class="section" id="contact">
+    <section class="section reveal" id="contact">
       <div class="container">
         <h2 class="section-title">Contact <span class="accent">Me</span></h2>
         <p class="section-desc">
@@ -191,38 +202,40 @@
         </p>
 
         <div class="grid-2">
-          <div class="panel">
+          <!-- Contact Details with icons + CV download -->
+          <div class="panel contact-icons">
             <h3>Contact Details</h3>
 
-            <p class="contact-line">
-              <strong>Email:</strong>
-              <a class="link" href="mailto:mohamedadelshafei20@gmail.com">mohamedadelshafei20@gmail.com</a>
-            </p>
+            <a class="contact-item" href="mailto:mohamedadelshafei20@gmail.com">
+              <span class="icon"><img src="icon/iconsgmail.png" alt="Gmail"></span>
+              <span>mohamedadelshafei20@gmail.com</span>
+            </a>
 
-            <p class="contact-line">
-              <strong>LinkedIn:</strong>
-              <a class="link" href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank" rel="noopener">
-                mohamed-adel-shafei
-              </a>
-            </p>
-             <p class="contact-line">
-              <strong>Github:</strong>
-              <a class="link" href="https://github.com/mohamed-adel-shafei" target="_blank" rel="noopener">
-                mohamed-adel-shafei
-              </a>
-            </p>
+            <a class="contact-item" href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank" rel="noopener">
+              <span class="icon"><img src="icon/iconslinkedin.png" alt="LinkedIn"></span>
+              <span>mohamed-adel-shafei</span>
+            </a>
 
-            <p class="contact-line">
-              <strong>WhatsApp:</strong>
-              <!-- غيّر الرقم هنا لو مختلف -->
-              <a class="link" href="https://wa.me/201018559587" target="_blank" rel="noopener">
-                +20 101 855 9587
-              </a>
-            </p>
+            <a class="contact-item" href="https://github.com/mohamed-adel-shafei" target="_blank" rel="noopener">
+              <span class="icon"><img src="icon/iconsgithub.png" alt="GitHub"></span>
+              <span>mohamed-adel-shafei</span>
+            </a>
 
-            <p class="contact-line"><strong>Location:</strong> Cairo, Egypt</p>
+            <a class="contact-item" href="https://wa.me/201018559587" target="_blank" rel="noopener">
+              <span class="icon"><img src="icon/iconswhatsapp.png" alt="WhatsApp"></span>
+              <span>+20 101 855 9587</span>
+            </a>
+
+            <div class="contact-item">
+              <span class="icon"><img src="icon/iconslocation.png" alt="Location"></span>
+              <span>Cairo, Egypt</span>
+            </div>
+
+            <!-- CV download inside contact -->
+            <a class="btn primary cv-btn" href="Mohamed-Adel-CV.pdf" download>Download CV</a>
           </div>
 
+          <!-- Form -->
           <form class="panel form" onsubmit="return false;">
             <label>
               Name
@@ -247,10 +260,15 @@
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-row">
       <span>© <span id="year"></span> Mohamed Adel Shafei</span>
-      <a class="link" href="#home">Back to top ↑</a>
+      <div class="footer-links">
+        <a class="link" href="#home">Home</a>
+        <a class="link" href="#projects">Projects</a>
+        <a class="link" href="#contact">Contact</a>
+      </div>
     </div>
   </footer>
 
