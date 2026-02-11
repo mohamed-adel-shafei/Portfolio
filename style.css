@@ -435,9 +435,9 @@ input:focus, textarea:focus{
 }
 /* CV Button */
 .cv-btn {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
+  background: rgba(209, 7, 7, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.041);
+  color: #be0f0f;
 }
 
 .cv-btn:hover {
