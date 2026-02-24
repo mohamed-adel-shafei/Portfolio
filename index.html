@@ -7,6 +7,18 @@
     <title>Mohamed Adel - Electrical Engineer Portfolio</title>
     <meta name="description"
         content="Portfolio of Mohamed Adel, an Electrical Engineer specializing in site supervision, shop drawings, and MEP coordination.">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Mohamed Adel - Electrical Engineer Portfolio">
+    <meta property="og:description"
+        content="Electrical Site Engineer with hands-on experience in MEP site execution, shop drawings compliance, coordination, and safety on construction projects.">
+    <meta property="og:image" content="https://mohamed-adel-shafei.github.io/my-website/images/Photo.jpg">
+    <meta property="og:url" content="https://mohamed-adel-shafei.github.io/my-website/">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,7 +61,7 @@
 
                 <p class="subtitle">Hello, I'm</p>
                 <h1>Mohamed Adel</h1>
-                <h2>Electrical Engineer</h2>
+                <h2><span class="typed-text"></span><span class="cursor">&nbsp;</span></h2>
                 <p class="description">
                     Electrical Site Engineer with hands-on experience in MEP site execution, shop drawings compliance,
                     coordination, and safety on construction projects.
@@ -166,8 +178,17 @@
     <section id="projects" class="section">
         <div class="container">
             <h2 class="section-title fade-in">Projects</h2>
+
+            <!-- Filter Buttons -->
+            <div class="filter-container fade-in">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="site">Site Execution</button>
+                <button class="filter-btn" data-filter="design">Design</button>
+                <button class="filter-btn" data-filter="automation">Automation</button>
+            </div>
+
             <div class="projects-grid">
-                <div class="project-card fade-in">
+                <div class="project-card fade-in" data-category="site">
                     <div class="project-content">
                         <h3>Construction Site Electrical Execution</h3>
                         <p class="project-subtitle">Site Supervision Strategy</p>
@@ -182,7 +203,7 @@
                         <a href="#contact" class="btn btn-sm view-project-details">View Details</a>
                     </div>
                 </div>
-                <div class="project-card fade-in">
+                <div class="project-card fade-in" data-category="automation">
                     <div class="project-content">
                         <img src="images/Faculty.jpg" alt="Faculty Logo" class="card-floating-icon">
                         <h3 style="margin-bottom: 5px; margin-top: 25px;">Graduation Project</h3>
@@ -200,7 +221,7 @@
                         <a href="#contact" class="btn btn-sm view-project-details">View Details</a>
                     </div>
                 </div>
-                <div class="project-card fade-in">
+                <div class="project-card fade-in" data-category="design">
                     <div class="project-content">
                         <img src="images/Eduneers.jpg" alt="Eduneers Logo" class="card-floating-icon">
                         <h3 style="margin-bottom: 5px; margin-top: 25px; white-space: nowrap;">Eduneers Advanced Diploma
@@ -385,18 +406,24 @@
                         </div>
                     </div>
                 </div>
-                <form class="contact-form fade-in" action="#" method="post"
-                    onsubmit="event.preventDefault(); alert('This is a demo form. Please contact me via email or LinkedIn.');">
+                <form class="contact-form fade-in" action="https://api.web3forms.com/submit" method="POST"
+                    id="contact-form">
+                    <!-- Web3Forms Access Key -->
+                    <input type="hidden" name="access_key" value="54df8a96-9799-40ea-9e13-49e8535f74a6">
+                    <input type="hidden" name="subject" value="New Contact from Portfolio Website">
+                    <input type="checkbox" name="botcheck" style="display: none;">
+
                     <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
+                        <input type="text" name="name" placeholder="Your Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Message</button>
+                    <p id="form-result" style="display: none; margin-top: 10px;"></p>
                 </form>
             </div>
         </div>
