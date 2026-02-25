@@ -332,51 +332,198 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ------------------------------------------------------------------
-    // 10. Web3Forms Submission Logic
+    // 10. Vibe Engineered Architecture (Security & Submission)
     // ------------------------------------------------------------------
-    const form = document.getElementById('contact-form');
-    const result = document.getElementById('form-result');
 
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
-
-            result.style.display = "block";
-            result.innerHTML = "Sending...";
-
-            fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+    /**
+     * ==============================================================================
+     * 🏗️ PORTFOLIO CONFIGURATION (User-Centric Data Layer)
+     * ==============================================================================
+     */
+    const PortfolioConfig = {
+        api: {
+            webformsKey: "54df8a96-9799-40ea-9e13-49e8535f74a6",
+            submissionEndpoint: "https://api.web3forms.com/submit"
+        },
+        identity: {
+            name: "Mohamed Adel",
+            title: "Electrical Site Engineer & Talent Acquisition Specialist",
+            obfuscatedEmail: {
+                user: "mohamedadelshafei20",
+                domain: "gmail.com"
+            }
+        },
+        securityRules: {
+            contactForm: {
+                name: {
+                    pattern: /^[a-zA-Z\s\.\-']{2,50}$/,
+                    maxLength: 50,
+                    errorMessage: "Invalid Name. strictly 2-50 letters/spaces allowed."
                 },
-                body: json
-            })
-                .then(async (response) => {
-                    let json = await response.json();
-                    if (response.status == 200) {
-                        result.innerHTML = "Message sent successfully! I will get back to you soon.";
-                        result.style.color = "var(--primary-color)";
-                    } else {
-                        console.log(response);
-                        result.innerHTML = json.message;
-                        result.style.color = "red";
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                    result.innerHTML = "Something went wrong!";
-                    result.style.color = "red";
-                })
-                .then(function () {
-                    form.reset();
-                    setTimeout(() => {
-                        result.style.display = "none";
-                    }, 5000);
+                email: {
+                    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    maxLength: 100,
+                    errorMessage: "Invalid Email format."
+                },
+                message: {
+                    pattern: /^.{10,1000}$/s,
+                    minLength: 10,
+                    maxLength: 1000,
+                    errorMessage: "Message must be strictly between 10 and 1000 characters."
+                }
+            }
+        }
+    };
+
+    const deepFreeze = (obj) => {
+        Object.keys(obj).forEach(prop => {
+            if (typeof obj[prop] === 'object' && obj[prop] !== null) deepFreeze(obj[prop]);
+        });
+        return Object.freeze(obj);
+    };
+    deepFreeze(PortfolioConfig);
+
+    /**
+     * ==============================================================================
+     * 🛡️ THE SECURITY ENGINE (Processing, Sanitization & Logic)
+     * ==============================================================================
+     */
+    const SecurityEngine = (() => {
+        const sanitizeHTML = (input) => {
+            if (typeof input !== 'string') return '';
+            const escapeMap = {
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;'
+            };
+            return input.replace(/[&<>"']/g, match => escapeMap[match]);
+        };
+
+        const validateField = (fieldName, rawValue) => {
+            const rules = PortfolioConfig.securityRules.contactForm[fieldName];
+            if (!rules) return { isValid: false, error: "System Error: Field rules undefined." };
+
+            const processValue = rawValue.trim();
+
+            if (rules.minLength && processValue.length < rules.minLength) {
+                return { isValid: false, error: rules.errorMessage };
+            }
+            if (rules.maxLength && processValue.length > rules.maxLength) {
+                return { isValid: false, error: rules.errorMessage };
+            }
+
+            if (!rules.pattern.test(processValue)) {
+                return { isValid: false, error: rules.errorMessage };
+            }
+
+            return { isValid: true, sanitizedValue: sanitizeHTML(processValue) };
+        };
+
+        const setStatus = (element, message, type = 'info') => {
+            if (!element) return;
+            element.textContent = message;
+            element.style.display = 'block';
+            element.style.color = type === 'error' ? 'red' : (type === 'success' ? 'var(--primary-color)' : 'var(--text-secondary)');
+        };
+
+        const initSecureDOM = () => {
+            const emailLink = document.getElementById('protected-email');
+            if (emailLink) {
+                const safeEmail = `${PortfolioConfig.identity.obfuscatedEmail.user}@${PortfolioConfig.identity.obfuscatedEmail.domain}`;
+                emailLink.textContent = safeEmail;
+                emailLink.href = `mailto:${safeEmail}`;
+            }
+        };
+
+        return { sanitize: sanitizeHTML, validate: validateField, updateStatus: setStatus, initDOM: initSecureDOM };
+    })();
+
+    // Initialize DOM Protections dynamically
+    SecurityEngine.initDOM();
+
+    /**
+     * ==============================================================================
+     * 🚀 SECURE FORM SUBMISSION (Integration & Transport)
+     * ==============================================================================
+     */
+    const contactForm = document.getElementById('contact-form');
+    const formResult = document.getElementById('form-result');
+    const honeypotField = document.getElementById('honeypot');
+
+    if (contactForm && formResult) {
+        let lastSubmitTime = 0; // for rate limiting
+
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // --- 1. Rate Limiting Check (1 submission per 60 seconds) ---
+            const now = Date.now();
+            if (now - lastSubmitTime < 60000) {
+                SecurityEngine.updateStatus(formResult, "Please wait a minute before sending another message.", "error");
+                return;
+            }
+
+            SecurityEngine.updateStatus(formResult, "Validating...", "info");
+
+            if (honeypotField && honeypotField.value.trim().length > 0) {
+                console.warn("Security Alert: Suspicious activity blocked.");
+                SecurityEngine.updateStatus(formResult, "Message sent successfully! I will get back to you soon.", "success");
+                contactForm.reset();
+                setTimeout(() => { formResult.style.display = "none"; }, 5000);
+                return;
+            }
+
+            const formData = new FormData(contactForm);
+            const rawPayload = Object.fromEntries(formData);
+            const securePayload = {};
+
+            const fieldsToValidate = ['name', 'email', 'message'];
+            let isFormValid = true;
+
+            for (const field of fieldsToValidate) {
+                const rawValue = rawPayload[field] || '';
+                const validationScore = SecurityEngine.validate(field, rawValue);
+
+                if (!validationScore.isValid) {
+                    SecurityEngine.updateStatus(formResult, validationScore.error, "error");
+                    isFormValid = false;
+                    break;
+                }
+                securePayload[field] = validationScore.sanitizedValue;
+            }
+
+            if (!isFormValid) return;
+
+            securePayload.access_key = SecurityEngine.sanitize(PortfolioConfig.api.webformsKey);
+            securePayload.subject = SecurityEngine.sanitize("New Secure Contact Request");
+            if (rawPayload.botcheck) {
+                securePayload.botcheck = SecurityEngine.sanitize(rawPayload.botcheck);
+            }
+
+            try {
+                SecurityEngine.updateStatus(formResult, "Encrypting and sending payload...", "info");
+
+                const response = await fetch(PortfolioConfig.api.submissionEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(securePayload)
                 });
+
+                const jsonResponse = await response.json();
+
+                if (response.status === 200) {
+                    const safeSuccessMessage = SecurityEngine.sanitize(jsonResponse.message || "Message sent successfully! I will get back to you soon.");
+                    SecurityEngine.updateStatus(formResult, safeSuccessMessage, "success");
+                    contactForm.reset();
+                    lastSubmitTime = Date.now(); // Record success time for rate limit
+                } else {
+                    console.error("API Error Status:", SecurityEngine.sanitize(String(response.status)));
+                    SecurityEngine.updateStatus(formResult, "Service structure unavailable. Please try again.", "error");
+                }
+            } catch (networkError) {
+                console.error("Transmission Error.");
+                SecurityEngine.updateStatus(formResult, "Secure connection failed. Please check your network.", "error");
+            } finally {
+                setTimeout(() => { formResult.style.display = "none"; }, 6000);
+            }
         });
     }
 
@@ -397,9 +544,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const filterValue = btn.getAttribute('data-filter');
 
                 projectCards.forEach(card => {
+                    card.style.display = 'none'; // Instantly hide all to reset layout
+
                     if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                        card.classList.remove('hide');
-                        // Small timeout to allow display:block to apply before animating opacity/transform if needed
+                        card.style.display = 'flex'; // Instantly show matching (since it's a flex column)
+                        // Tiny delay to ensure CSS registers the block display before fading in
                         setTimeout(() => {
                             card.style.opacity = '1';
                             card.style.transform = 'scale(1)';
@@ -407,13 +556,216 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         card.style.opacity = '0';
                         card.style.transform = 'scale(0.8)';
-                        setTimeout(() => {
-                            card.classList.add('hide');
-                        }, 300); // Wait for transition
                     }
                 });
             });
         });
     }
+
+    // ------------------------------------------------------------------
+    // 12. Email Obfuscation
+    // ------------------------------------------------------------------
+    const protectedEmail = document.getElementById('protected-email');
+    if (protectedEmail) {
+        const user = "mohamedadelshafei20";
+        const domain = "gmail.com";
+        const email = user + "@" + domain;
+        // Decode and set the email on page load
+        protectedEmail.textContent = email;
+        protectedEmail.href = "mailto:" + email;
+    }
+
+    // Code removed to revert geometric canvas
+
+    // ------------------------------------------------------------------
+    // 13. Multi-language Support (i18n)
+    // ------------------------------------------------------------------
+    const langToggle = document.getElementById('lang-toggle');
+    let isArabic = false;
+
+    if (langToggle) {
+        langToggle.addEventListener('click', () => {
+            isArabic = !isArabic;
+            document.documentElement.setAttribute('dir', isArabic ? 'rtl' : 'ltr');
+            document.documentElement.setAttribute('lang', isArabic ? 'ar' : 'en');
+            langToggle.innerHTML = isArabic ? 'EN' : '<i class="fas fa-globe"></i>';
+
+            const elementsToTranslate = document.querySelectorAll('[data-ar]');
+            elementsToTranslate.forEach(el => {
+                if (!el.hasAttribute('data-en')) {
+                    // Save the English original text
+                    el.setAttribute('data-en', el.innerHTML);
+                }
+
+                if (isArabic) {
+                    el.innerHTML = el.getAttribute('data-ar');
+                } else {
+                    el.innerHTML = el.getAttribute('data-en');
+                }
+            });
+        });
+    }
+
+    // ------------------------------------------------------------------
+    // 14. Testimonials Carousel
+    // ------------------------------------------------------------------
+    const track = document.getElementById('testimonials-track');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    if (track && prevBtn && nextBtn) {
+        let currentIndex = 0;
+        const cards = track.querySelectorAll('.testimonial-card');
+        const cardCount = cards.length;
+
+        function updateCarousel() {
+            // Adjust translate direction based on language currently active
+            track.style.transform = `translateX(${currentIndex * (isArabic ? 100 : -100)}%)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % cardCount;
+            updateCarousel();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + cardCount) % cardCount;
+            updateCarousel();
+        });
+
+        // Handle RTL switch gracefully
+        if (langToggle) {
+            langToggle.addEventListener('click', () => {
+                setTimeout(updateCarousel, 50); // slight delay to allow layout
+            });
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // 15. Advanced CV Download Modal
+    // ------------------------------------------------------------------
+    const cvDownloadBtn = document.getElementById('cv-download-btn');
+    const cvModal = document.getElementById('cv-modal');
+    const progressBarFill = document.querySelector('.progress-bar-fill');
+
+    if (cvDownloadBtn && cvModal) {
+        cvDownloadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const cvUrl = cvDownloadBtn.getAttribute('data-cv-url');
+
+            // Show Modal
+            cvModal.classList.remove('hidden');
+
+            // Start Loading Animation
+            setTimeout(() => {
+                if (progressBarFill) progressBarFill.style.width = '100%';
+            }, 100);
+
+            // Hide and download after delay
+            setTimeout(() => {
+                cvModal.classList.add('hidden');
+                if (progressBarFill) progressBarFill.style.width = '0%'; // reset
+
+                // Trigger actual download explicitly
+                const link = document.createElement('a');
+                link.href = cvUrl;
+                link.download = cvUrl; // default download name
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, 1800);
+        });
+    }
+
+    // ------------------------------------------------------------------
+    // 16. Basic Anti-Scraping & Copy Protection
+    // ------------------------------------------------------------------
+    // Disable Right Click
+    document.addEventListener('contextmenu', (e) => {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+        }
+    });
+
+    // Disable common developer tools shortcuts (F12, Ctrl+Shift+I/J/C, Ctrl+U)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+            (e.ctrlKey && e.key === 'U')) {
+            e.preventDefault();
+        }
+    });
+
+    // ------------------------------------------------------------------
+    // 17. Reading Progress Bar
+    // ------------------------------------------------------------------
+    const progressBar = document.getElementById('reading-progress');
+    window.addEventListener('scroll', () => {
+        if (progressBar) {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = scrollPercentage + '%';
+        }
+    });
+
+    // ------------------------------------------------------------------
+    // 18. Stats Counter Animation
+    // ------------------------------------------------------------------
+    const counters = document.querySelectorAll('.counter');
+    let hasCounted = false;
+
+    if (counters.length > 0) {
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasCounted) {
+                    hasCounted = true; // prevent re-running
+                    counters.forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        const duration = 2000; // ms
+                        const increment = target / (duration / 16); // 60fps
+
+                        let currentCount = 0;
+                        const updateCounter = () => {
+                            currentCount += increment;
+                            if (currentCount < target) {
+                                counter.innerText = Math.ceil(currentCount);
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCounter();
+                    });
+                    observer.disconnect(); // Stop observing once animated
+                }
+            });
+        }, { threshold: 0.5 }); // Trigger when 50% of section is visible
+
+        const statsSection = document.getElementById('stats');
+        if (statsSection) {
+            counterObserver.observe(statsSection);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // 19. Smart Sticky Navbar
+    // ------------------------------------------------------------------
+    const navbar = document.querySelector('.navbar');
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', () => {
+        if (!navbar) return;
+
+        let st = window.pageYOffset || document.documentElement.scrollTop;
+        if (st > lastScrollTop && st > 80) {
+            // Scroll Down
+            navbar.classList.add('navbar-hidden');
+        } else {
+            // Scroll Up
+            navbar.classList.remove('navbar-hidden');
+        }
+        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+    });
 
 });

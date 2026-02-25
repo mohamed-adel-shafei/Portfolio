@@ -9,12 +9,21 @@
         content="Portfolio of Mohamed Adel, an Electrical Engineer specializing in site supervision, shop drawings, and MEP coordination.">
 
     <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:site_name" content="Mohamed Adel Portfolio">
+    <meta property="og:locale" content="en_US">
     <meta property="og:title" content="Mohamed Adel - Electrical Engineer Portfolio">
     <meta property="og:description"
         content="Electrical Site Engineer with hands-on experience in MEP site execution, shop drawings compliance, coordination, and safety on construction projects.">
     <meta property="og:image" content="https://mohamed-adel-shafei.github.io/my-website/images/Photo.jpg">
     <meta property="og:url" content="https://mohamed-adel-shafei.github.io/my-website/">
     <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mohamed Adel - Electrical Engineer Portfolio">
+    <meta name="twitter:description"
+        content="Electrical Site Engineer with hands-on experience in MEP site execution, shop drawings compliance, coordination, and safety on construction projects.">
+    <meta name="twitter:image" content="https://mohamed-adel-shafei.github.io/my-website/images/Photo.jpg">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
@@ -27,6 +36,9 @@
 </head>
 
 <body>
+    <!-- Reading Progress Bar -->
+    <div id="reading-progress"></div>
+
     <!-- Cursor Glow Effect -->
     <div id="cursor-glow"></div>
     <canvas id="bgCanvas"></canvas>
@@ -35,15 +47,17 @@
         <div class="container nav-container">
             <a href="#" class="logo">MA.</a>
             <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#certifications">Certifications</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about" data-ar="عني">About</a></li>
+                <li><a href="#skills" data-ar="المهارات">Skills</a></li>
+                <li><a href="#projects" data-ar="المشاريع">Projects</a></li>
+                <li><a href="#certifications" data-ar="الشهادات">Certifications</a></li>
+                <li><a href="#experience" data-ar="الخبرة">Experience</a></li>
+                <li><a href="#services" data-ar="الخدمات">Services</a></li>
+                <li><a href="#contact" data-ar="تواصل معي">Contact</a></li>
             </ul>
             <div class="nav-controls">
+                <button id="lang-toggle" class="lang-btn" aria-label="Toggle Language" title="English / عربي"><i
+                        class="fas fa-globe"></i></button>
                 <button id="theme-toggle" aria-label="Toggle Dark Mode">
                     <i class="fas fa-sun"></i>
                 </button>
@@ -61,19 +75,21 @@
             <div class="hero-content fade-in-up">
 
                 <p class="subtitle">Hello, I'm</p>
-                <h1>Mohamed Adel</h1>
+                <h1 data-ar="محمد عادل">Mohamed Adel</h1>
                 <h2><span class="typed-text"></span><span class="cursor">&nbsp;</span></h2>
-                <p class="description">
+                <p class="description"
+                    data-ar="مهندس موقع كهرباء بخبرة عملية في التنفيذ، قراءة المخططات التنفيذية، التنسيق الميداني، ومتابعة الجودة والسلامة في المشاريع الإنشائية.">
                     Electrical Site Engineer with hands-on experience in MEP site execution, shop drawings compliance,
                     coordination, and safety on construction projects.
                 </p>
                 <div class="cta-buttons">
-                    <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="Mohamed Adel - 𝐄𝐥𝐞𝐜𝐭𝐫𝐢𝐜𝐚𝐥 𝐒𝐢𝐭𝐞 𝐄𝐧𝐠𝐢𝐧𝐞𝐞𝐫.pdf" download
+                    <a href="#projects" class="btn btn-primary" data-ar="عرض المشاريع">View Projects</a>
+                    <a href="#" id="cv-download-btn"
+                        data-cv-url="Mohamed Adel - 𝐄𝐥𝐞𝐜𝐭𝐫𝐢𝐜𝐚𝐥 𝐒𝐢𝐭𝐞 𝐄𝐧𝐠𝐢𝐧𝐞𝐞𝐫.pdf"
                         class="btn btn-secondary cv-button">
-                        <i class="fas fa-file-download"></i> My CV
+                        <i class="fas fa-file-download"></i> <span data-ar="السيرة الذاتية">My CV</span>
                     </a>
-                    <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                    <a href="#contact" class="btn btn-secondary" data-ar="تواصل معي">Contact Me</a>
                 </div>
             </div>
         </div>
@@ -81,7 +97,7 @@
 
     <section id="about" class="section">
         <div class="container about-container">
-            <h2 class="section-title fade-in">About Me</h2>
+            <h2 class="section-title fade-in" data-ar="عنّي">About Me</h2>
             <div class="about-content">
                 <div class="about-image fade-in">
                     <div class="image-container">
@@ -106,9 +122,35 @@
         </div>
     </section>
 
+    <!-- Stats / Counters Section -->
+    <section id="stats" class="section highlight-section" style="padding: 40px 0;">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in"
+                    style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <h3 style="font-size: 3rem; color: var(--primary-color); margin: 0; line-height: 1;">+<span
+                            class="counter" data-target="1">0</span></h3>
+                    <p data-ar="سنوات خبرة" style="margin: 0; text-align: start;">Years Experience</p>
+                </div>
+                <div class="stat-item fade-in"
+                    style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <h3 style="font-size: 3rem; color: var(--primary-color); margin: 0; line-height: 1;">+<span
+                            class="counter" data-target="3">0</span></h3>
+                    <p data-ar="مشاريع منجزة" style="margin: 0; text-align: start;">Projects Completed</p>
+                </div>
+                <div class="stat-item fade-in"
+                    style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <h3 style="font-size: 3rem; color: var(--primary-color); margin: 0; line-height: 1;">+<span
+                            class="counter" data-target="15">0</span></h3>
+                    <p data-ar="شهادات فنية" style="margin: 0; text-align: start;">Technical Courses</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="skills" class="section">
         <div class="container">
-            <h2 class="section-title fade-in">Skills</h2>
+            <h2 class="section-title fade-in" data-ar="المهارات">Skills</h2>
             <div class="skills-grid">
                 <div class="skill-category fade-in">
                     <h3><i class="fas fa-hard-hat"></i> Site & Construction</h3>
@@ -179,14 +221,14 @@
 
     <section id="projects" class="section">
         <div class="container">
-            <h2 class="section-title fade-in">Projects</h2>
+            <h2 class="section-title fade-in" data-ar="المشاريع">Projects</h2>
 
             <!-- Filter Buttons -->
             <div class="filter-container fade-in">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="site">Site Execution</button>
-                <button class="filter-btn" data-filter="design">Design</button>
-                <button class="filter-btn" data-filter="automation">Automation</button>
+                <button class="filter-btn active" data-filter="all" data-ar="الكل">All</button>
+                <button class="filter-btn" data-filter="site" data-ar="تنفيذ الموقع">Site Execution</button>
+                <button class="filter-btn" data-filter="design" data-ar="التصميم">Design</button>
+                <button class="filter-btn" data-filter="automation" data-ar="التحكم الآلي">Automation</button>
             </div>
 
             <div class="projects-grid">
@@ -255,7 +297,7 @@
 
     <section id="certifications" class="section highlight-section">
         <div class="container">
-            <h2 class="section-title fade-in">Certifications & Courses</h2>
+            <h2 class="section-title fade-in" data-ar="الشهادات والدورات">Certifications & Courses</h2>
             <div class="certifications-grid">
                 <!-- Example Certification 1 -->
                 <div class="cert-card fade-in stagger-1">
@@ -319,7 +361,7 @@
 
     <section id="experience" class="section">
         <div class="container">
-            <h2 class="section-title fade-in">Experience</h2>
+            <h2 class="section-title fade-in" data-ar="الخبرة العملية">Experience</h2>
             <div class="timeline">
                 <div class="timeline-item fade-in">
                     <div class="timeline-date">Oct 2025 – Dec 2025</div>
@@ -403,7 +445,7 @@
 
     <section id="services" class="section">
         <div class="container">
-            <h2 class="section-title fade-in">Services</h2>
+            <h2 class="section-title fade-in" data-ar="الخدمات">Services</h2>
             <div class="services-grid">
                 <div class="service-card fade-in">
                     <i class="fas fa-hard-hat service-icon"></i>
@@ -429,9 +471,55 @@
         </div>
     </section>
 
+    <section id="testimonials" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in" data-ar="توصيات مهنية">Professional Recommendations</h2>
+            <div class="testimonials-slider fade-in">
+                <div class="testimonials-track" id="testimonials-track">
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p class="t-text"
+                            data-ar="مهندس متميز، يجمع بين الفهم النظري والخبرة العملية في الموقع بشكل احترافي. يُعتمد عليه في أصعب المواقف.">
+                            An outstanding engineer who elegantly combines solid theoretical background with hands-on
+                            site execution expertise. Highly reliable in critical situations.</p>
+                        <div class="t-author">
+                            <img src="https://ui-avatars.com/api/?name=Senior+Consultant&background=random" alt="Author"
+                                loading="lazy">
+                            <div>
+                                <h4 data-ar="مهندس استشاري أول">Senior Consultant</h4>
+                                <span data-ar="توصية لينكد إن">LinkedIn Recommendation</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p class="t-text"
+                            data-ar="قدرة استثنائية على حل المشاكل وقراءة المخططات المعقدة بدقة متناهية. إضافة حقيقية لأي فريق عمل إنشائي.">
+                            Exceptional problem-solving skills and an eye for detail when reviewing complex shop
+                            drawings. A true asset to any construction team.</p>
+                        <div class="t-author">
+                            <img src="https://ui-avatars.com/api/?name=Project+Manager&background=random" alt="Author"
+                                loading="lazy">
+                            <div>
+                                <h4 data-ar="مدير مشروع">Project Manager</h4>
+                                <span data-ar="توصية لينكد إن">LinkedIn Recommendation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-btn prev-btn" aria-label="Previous Testimonial"><i
+                            class="fas fa-chevron-left"></i></button>
+                    <button class="slider-btn next-btn" aria-label="Next Testimonial"><i
+                            class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="career-objective" class="section highlight-section">
         <div class="container text-center fade-in">
-            <h2 class="section-title">Career Objective</h2>
+            <h2 class="section-title" data-ar="الهدف المهني">Career Objective</h2>
             <p class="objective-text">
                 To grow as an Electrical Engineer in construction and contracting environments by combining strong site
                 execution discipline with technical office and design capabilities, contributing to high-quality, safe
@@ -442,35 +530,38 @@
 
     <section id="contact" class="section">
         <div class="container contact-container">
-            <h2 class="section-title fade-in">Get In Touch</h2>
+            <h2 class="section-title fade-in" data-ar="تواصل معي">Get In Touch</h2>
             <div class="contact-wrapper">
                 <div class="contact-info fade-in">
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h3>Email</h3>
-                            <a href="mailto:mohamedadelshafei20@gmail.com">mohamedadelshafei20@gmail.com</a>
+                            <a href="#" id="protected-email">Loading email...</a>
                         </div>
                     </div>
                     <div class="contact-item" id="linkedin-contact">
                         <i class="fab fa-linkedin"></i>
                         <div>
                             <h3>LinkedIn</h3>
-                            <a href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank">View Profile</a>
+                            <a href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank"
+                                rel="noopener noreferrer">View Profile</a>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fab fa-github"></i>
                         <div>
                             <h3>GitHub</h3>
-                            <a href="https://github.com/mohamed-adel-shafei" target="_blank">View GitHub</a>
+                            <a href="https://github.com/mohamed-adel-shafei" target="_blank"
+                                rel="noopener noreferrer">View GitHub</a>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fab fa-whatsapp"></i>
                         <div>
                             <h3>WhatsApp</h3>
-                            <a href="https://wa.me/201018559587" target="_blank">Chat on WhatsApp</a>
+                            <a href="https://wa.me/201018559587" target="_blank" rel="noopener noreferrer">Chat on
+                                WhatsApp</a>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -486,7 +577,8 @@
                     <!-- Web3Forms Access Key -->
                     <input type="hidden" name="access_key" value="54df8a96-9799-40ea-9e13-49e8535f74a6">
                     <input type="hidden" name="subject" value="New Contact from Portfolio Website">
-                    <input type="checkbox" name="botcheck" style="display: none;">
+                    <input type="checkbox" name="botcheck" class="hidden">
+                    <input type="text" name="honeypot" id="honeypot" class="hidden" tabindex="-1" autocomplete="off">
 
                     <div class="form-group">
                         <input type="text" name="name" placeholder="Your Name" required>
@@ -509,6 +601,19 @@
             <p>&copy; 2025 Mohamed Adel. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <!-- Advanced CV Download Modal -->
+    <div id="cv-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-spinner"></div>
+            <h3 id="modal-title" data-ar="جاري تحضير النسخة الأحدث...">Preparing the latest version...</h3>
+            <p id="modal-desc" data-ar="يرجى الانتظار بينما نقوم بتأمين الملف للتحميل.">Please wait while we secure the
+                file for download.</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scroll Progress Button -->
     <a href="#hero" class="progress-wrap" id="progress-scroll">

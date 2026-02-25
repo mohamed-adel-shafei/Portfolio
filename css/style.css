@@ -24,6 +24,8 @@
     --border-color: #334155;
     /* Slate 700 */
     --header-bg: rgba(15, 23, 42, 0.9);
+    --card-bg-glass: rgba(30, 41, 59, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
 
     /* Spacing */
     --section-padding: 80px 0;
@@ -53,6 +55,8 @@
     --border-color: #e2e8f0;
     /* Slate 200 */
     --header-bg: rgba(248, 250, 252, 0.9);
+    --card-bg-glass: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(15, 23, 42, 0.08);
 }
 
 * {
@@ -63,6 +67,15 @@
 
 html {
     scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+html::-webkit-scrollbar {
+    display: none;
 }
 
 body {
@@ -74,6 +87,8 @@ body {
     position: relative;
     overflow-x: hidden;
 }
+
+
 
 /* =========================================
    Premium UI Additions (Motion & Interaction)
@@ -124,6 +139,22 @@ body {
         transform: scale(4);
         opacity: 0;
     }
+}
+
+/* =========================================
+   Interactive Particle Background
+   ========================================= */
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    /* Keep behind all content */
+    pointer-events: none;
+    /* Crucial: Allows clicking through to buttons/links */
+    opacity: 0.8;
 }
 
 .btn {
@@ -283,6 +314,11 @@ html body .reveal-on-scroll {
     height: 80px;
     display: flex;
     align-items: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.navbar-hidden {
+    transform: translateY(-100%);
 }
 
 .nav-container {
@@ -500,9 +536,11 @@ html body .reveal-on-scroll {
 }
 
 .project-card {
-    background-color: var(--card-bg);
+    background-color: var(--card-bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
     overflow: visible;
     margin-top: 80px;
     position: relative;
@@ -798,8 +836,15 @@ html body .reveal-on-scroll {
 
 .form-group input:focus,
 .form-group textarea:focus {
-    outline: none;
     border-color: var(--accent-color);
+    outline: none;
+}
+
+/* =========================================
+   Utility Classes
+   ========================================= */
+.hidden {
+    display: none !important;
 }
 
 /* =========================================
@@ -1075,7 +1120,8 @@ html body .reveal-on-scroll {
     fill: none;
     stroke: var(--accent-color);
     stroke-width: 4;
-    transition: stroke-dashoffset 10ms linear;
+    box-sizing: border-box;
+    transition: all 200ms linear;
 }
 
 .progress-wrap i {
@@ -1237,7 +1283,9 @@ html body .reveal-on-scroll {
 }
 
 .cert-card {
-    background: var(--card-bg);
+    background: var(--card-bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 12px;
     padding: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -1245,7 +1293,7 @@ html body .reveal-on-scroll {
     align-items: stretch;
     gap: 20px;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
 }
 
 .cert-card:hover {
@@ -1326,4 +1374,215 @@ html body .reveal-on-scroll {
     border-color: var(--primary-color);
     color: var(--primary-color);
     background: rgba(100, 255, 218, 0.05);
+}
+
+/* ==========================================================================
+   Language Toggle & RTL Support
+   ========================================================================== */
+.lang-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    font-family: inherit;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.lang-btn:hover {
+    color: var(--accent-color);
+}
+
+html[dir="rtl"] {
+    text-align: right;
+}
+
+html[dir="rtl"] .nav-links {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .contact-item i {
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+html[dir="rtl"] .service-card i {
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+html[dir="rtl"] .nav-links li a {
+    padding: 8px 15px;
+}
+
+/* ==========================================================================
+   CV Download Modal
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    transform: translateY(0) scale(1);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.hidden .modal-content {
+    transform: translateY(30px) scale(0.95);
+}
+
+.modal-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent-color);
+    transition: width 1.5s ease-in-out;
+}
+
+/* ==========================================================================
+   Testimonials Carousel
+   ========================================================================== */
+.testimonials-slider {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+.testimonials-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.testimonial-card {
+    min-width: 100%;
+    padding: 40px;
+    background: var(--card-bg-glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.quote-icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.t-text {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-primary);
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.t-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.t-author img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+}
+
+.t-author h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.t-author span {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.slider-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.slider-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
 }
