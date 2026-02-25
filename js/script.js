@@ -678,23 +678,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ------------------------------------------------------------------
-    // 16. Basic Anti-Scraping & Copy Protection
+    // 16. Basic Anti-Scraping & Copy Protection - REMOVED
     // ------------------------------------------------------------------
-    // Disable Right Click
-    document.addEventListener('contextmenu', (e) => {
-        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-            e.preventDefault();
-        }
-    });
-
-    // Disable common developer tools shortcuts (F12, Ctrl+Shift+I/J/C, Ctrl+U)
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'F12' ||
-            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
-            (e.ctrlKey && e.key === 'U')) {
-            e.preventDefault();
-        }
-    });
 
     // ------------------------------------------------------------------
     // 17. Reading Progress Bar
