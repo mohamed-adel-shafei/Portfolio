@@ -507,6 +507,8 @@ html body .reveal-on-scroll {
     margin-top: 80px;
     position: relative;
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    display: flex;
+    flex-direction: column;
 }
 
 .card-floating-icon {
@@ -549,6 +551,9 @@ html body .reveal-on-scroll {
 
 .project-content {
     padding: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .project-content h3 {
@@ -760,6 +765,7 @@ html body .reveal-on-scroll {
 .contact-item span {
     font-size: 1.1rem;
     font-weight: 500;
+    text-decoration: none !important;
 }
 
 .contact-item a:hover {
@@ -1234,7 +1240,7 @@ html body .reveal-on-scroll {
     padding: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 20px;
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -1255,6 +1261,13 @@ html body .reveal-on-scroll {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    align-self: flex-start;
+}
+
+.cert-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .cert-icon-wrapper i {
@@ -1289,7 +1302,7 @@ html body .reveal-on-scroll {
    ========================================================================== */
 .details-btn-container {
     text-align: center;
-    margin-top: 15px;
+    margin-top: auto;
     width: 100%;
 }
 

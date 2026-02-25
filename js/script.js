@@ -72,6 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     top: offsetPosition,
                     behavior: "smooth"
                 });
+
+                // Add flashing logic if target is linkedin-contact
+                if (targetId === '#linkedin-contact') {
+                    // Remove the class first in case it's already there to restart animation
+                    targetElement.classList.remove('attention-grabber');
+                    // Small delay to allow browser to register the removal
+                    setTimeout(() => {
+                        targetElement.classList.add('attention-grabber');
+                        setTimeout(() => {
+                            targetElement.classList.remove('attention-grabber');
+                        }, 4500); // 3 pulses (1.5s * 3)
+                    }, 50);
+                }
             }
         });
     });
