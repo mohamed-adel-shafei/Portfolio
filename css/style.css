@@ -230,6 +230,7 @@ html body .reveal-on-scroll {
     transition: background-color var(--transition-fast), transform var(--transition-fast);
     border: none;
     font-size: 1rem;
+    text-decoration: none !important;
 }
 
 .btn-primary {
