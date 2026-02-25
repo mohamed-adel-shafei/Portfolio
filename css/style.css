@@ -1113,8 +1113,8 @@ html body .reveal-on-scroll {
 .attention-grabber {
     animation: highlightPulse 1.5s infinite;
     border-radius: 8px;
-    padding: 10px;
-    border: 2px solid var(--accent-color);
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
     position: relative;
     z-index: 10;
 }
