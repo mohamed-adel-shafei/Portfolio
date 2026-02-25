@@ -1301,7 +1301,8 @@ html body .reveal-on-scroll {
    View Details Link Styling
    ========================================================================== */
 .details-btn-container {
-    text-align: center;
+    display: flex;
+    justify-content: center;
     margin-top: auto;
     width: 100%;
 }
