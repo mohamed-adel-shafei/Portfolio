@@ -65,7 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 const headerOffset = 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
+
+                // If scrolling to LinkedIn, calculate offset based on the parent #contact section
+                // so the user sees the "Get In Touch" header and the whole form.
+                let scrollAnchorElement = targetElement;
+                if (targetId === '#linkedin-contact') {
+                    scrollAnchorElement = document.querySelector('#contact');
+                }
+
+                const elementPosition = scrollAnchorElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
                 window.scrollTo({
