@@ -244,9 +244,12 @@
                             <span>Safety</span>
                             <span>Quality</span>
                         </div>
+
                         <div class="details-btn-container">
-                            <a href="#linkedin-contact" class="details-link">View
-                                Details</a>
+                            <button onclick="openCardStack()" class="details-link"
+                                style="background:transparent; border:1px solid var(--border-color); color:var(--text-color); cursor:pointer;">
+                                View Details
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -601,6 +604,14 @@
             <p>&copy; 2025 Mohamed Adel. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <!-- Card Stack Gallery Modal -->
+    <div id="card-stack-modal" class="lightbox-overlay hidden">
+        <span class="lightbox-close" onclick="closeCardStack()">&times;</span>
+        <div class="card-stack-container" id="card-stack-container">
+            <!-- Cards will be injected via JS -->
+        </div>
+    </div>
 
     <!-- Advanced CV Download Modal -->
     <div id="cv-modal" class="modal-overlay hidden">

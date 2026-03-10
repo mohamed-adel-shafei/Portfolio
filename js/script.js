@@ -753,4 +753,137 @@ document.addEventListener('DOMContentLoaded', () => {
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
     });
 
+    // ------------------------------------------------------------------
+    // 20. Animated Card Stack Gallery
+    // ------------------------------------------------------------------
+    const cardStackModal = document.getElementById('card-stack-modal');
+    const cardStackContainer = document.getElementById('card-stack-container');
+    let stackInterval = null;
+
+    // Photos paths array (dynamically matching the requested files)
+    const galleryPhotos = [
+        "Photos/Rawdat El-Obour Residential Project 1.jpg",
+        "Photos/Rawdat El-Obour Residential Project 2.jpg",
+        "Photos/Rawdat El-Obour Residential Project 3.jpg",
+        "Photos/Rawdat El-Obour Residential Project 4.jpg",
+        "Photos/Rawdat El-Obour Residential Project 5.jpg",
+        "Photos/Rawdat El-Obour Residential Project 6.jpg"
+    ];
+
+    window.openCardStack = function () {
+        if (!cardStackModal || !cardStackContainer) return;
+
+        // Render cards
+        cardStackContainer.innerHTML = '';
+        galleryPhotos.forEach((src, index) => {
+            const card = document.createElement('div');
+            card.classList.add('stack-card');
+
+            // Set initial state
+            if (index === 0) card.classList.add('active');
+            else if (index === 1) card.classList.add('next');
+            else card.classList.add('behind');
+
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `Gallery Image ${index + 1}`;
+            img.loading = "lazy";
+
+            card.appendChild(img);
+            cardStackContainer.appendChild(card);
+        });
+
+        cardStackModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // Start cycling
+        startCardCycle();
+    };
+
+    window.closeCardStack = function () {
+        if (!cardStackModal) return;
+        cardStackModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        stopCardCycle();
+
+        // Specific requirement: scroll to LinkedIn contact immediately after closing
+        const targetElement = document.querySelector('#linkedin-contact');
+        const scrollAnchorElement = document.querySelector('#contact');
+
+        if (targetElement && scrollAnchorElement) {
+            const headerOffset = 80;
+            const elementPosition = scrollAnchorElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+
+            // Highlight the LinkedIn card
+            targetElement.classList.remove('attention-grabber');
+            setTimeout(() => {
+                targetElement.classList.add('attention-grabber');
+                setTimeout(() => {
+                    targetElement.classList.remove('attention-grabber');
+                }, 4500); // 3 pulses
+            }, 800);
+        }
+    };
+
+    function startCardCycle() {
+        stopCardCycle(); // ensure clean state
+        stackInterval = setInterval(cycleCards, 3000); // Change image every 3 seconds
+    }
+
+    function stopCardCycle() {
+        if (stackInterval) {
+            clearInterval(stackInterval);
+            stackInterval = null;
+        }
+    }
+
+    function cycleCards() {
+        if (!cardStackContainer) return;
+
+        const cards = Array.from(cardStackContainer.querySelectorAll('.stack-card'));
+        if (cards.length === 0) return;
+
+        // Find current state indices
+        const activeIndex = cards.findIndex(c => c.classList.contains('active'));
+        const nextIndex = (activeIndex + 1) % cards.length;
+        const behindIndex = (activeIndex + 2) % cards.length;
+
+        // Transition active card out
+        cards[activeIndex].className = 'stack-card out';
+
+        // Wait a short delay, then move it to the back
+        setTimeout(() => {
+            if (cards[activeIndex] && cards[activeIndex].classList.contains('out')) {
+                cards[activeIndex].className = 'stack-card behind';
+            }
+        }, 800); // matches CSS transition time
+
+        // Promote next to active
+        cards[nextIndex].className = 'stack-card active';
+
+        // Promote behind to next
+        cards[behindIndex].className = 'stack-card next';
+    }
+
+    // Modal close listeners
+    if (cardStackModal) {
+        cardStackModal.addEventListener('click', (e) => {
+            if (e.target === cardStackModal) {
+                window.closeCardStack();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !cardStackModal.classList.contains('hidden')) {
+                window.closeCardStack();
+            }
+        });
+    }
+
 });
