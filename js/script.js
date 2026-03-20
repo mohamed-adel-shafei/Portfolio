@@ -353,8 +353,10 @@ class InteractionController {
                 }
 
                 const link = document.createElement('a');
-                link.href = cvDownloadBtn.getAttribute('data-cv-url');
-                link.download = link.href;
+                const cvUrl = cvDownloadBtn.getAttribute('data-cv-url');
+                link.href = cvUrl;
+                // Use the file name as the downloaded file name, avoiding absolute URL escaping.
+                link.download = cvUrl.split('/').pop();
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
