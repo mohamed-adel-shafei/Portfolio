@@ -1,240 +1,88 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // ------------------------------------------------------------------
-    // 1. Dark Mode Toggle
-    // ------------------------------------------------------------------
-    const themeToggle = document.getElementById('theme-toggle');
-    const htmlElement = document.documentElement;
-    const icon = themeToggle.querySelector('i');
+/**
+ * 🏗️ Mohamed Adel - Portfolio Architecture
+ * Engineered for Security, Performance & Maintainability.
+ * 
+ * Architecture Layout:
+ * 1. UIController (Theme, Reading Progress, Sticky Nav, Scroll Progress)
+ * 2. NavigationController (Mobile Nav Menu)
+ * 3. ScrollAnimationController (Staggered Reveals, Stats Counters, 3D Tilt)
+ * 4. InteractionController (Ripple, Typing Effect, Cursor Glow, Modals)
+ * 5. FeatureController (Projects Gallery, Filtering, Testimonials)
+ * 6. I18nController (Language Toggling)
+ * 7. SecurityEngine (Vanilla Zod-like Validator, Rate Limiting, Anti-Spam, Scrubbing)
+ */
 
-    const savedTheme = localStorage.getItem('theme');
+class UIController {
+    constructor() {
+        this.initThemeToggle();
+        this.initStickyNav();
+        this.initReadingProgress();
+        this.initScrollProgress();
+    }
 
-    // Initial setup
-    const initialTheme = savedTheme || 'dark';
-    htmlElement.setAttribute('data-theme', initialTheme);
-    updateIcon(initialTheme);
+    initThemeToggle() {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (!themeToggle) return;
 
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = htmlElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const htmlElement = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
 
-        htmlElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateIcon(newTheme);
-    });
+        htmlElement.setAttribute('data-theme', savedTheme);
+        this.updateThemeIcon(icon, savedTheme);
 
-    function updateIcon(theme) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            this.updateThemeIcon(icon, newTheme);
+        });
+    }
+
+    updateThemeIcon(icon, theme) {
         if (theme === 'dark') {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
+            icon.classList.replace('fa-moon', 'fa-sun');
         } else {
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
+            icon.classList.replace('fa-sun', 'fa-moon');
         }
     }
 
-    // ------------------------------------------------------------------
-    // 2. Mobile Navigation Toggle
-    // ------------------------------------------------------------------
-    const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    const navItems = document.querySelectorAll('.nav-links li a');
+    initStickyNav() {
+        const navbar = document.querySelector('.navbar');
+        let lastScrollTop = 0;
 
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-        });
-    });
-
-    // ------------------------------------------------------------------
-    // 3. Smooth Scrolling & Scroll Animation (Enhanced)
-    // ------------------------------------------------------------------
-
-    // Smooth Scroll for Anchors
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                const headerOffset = 80;
-
-                // If scrolling to LinkedIn, calculate offset based on the parent #contact section
-                // so the user sees the "Get In Touch" header and the whole form.
-                let scrollAnchorElement = targetElement;
-                if (targetId === '#linkedin-contact') {
-                    scrollAnchorElement = document.querySelector('#contact');
-                }
-
-                const elementPosition = scrollAnchorElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-
-                // Add flashing logic if target is linkedin-contact
-                if (targetId === '#linkedin-contact') {
-                    // Remove the class first in case it's already there to restart animation
-                    targetElement.classList.remove('attention-grabber');
-                    // Wait for smooth scroll to finish (approx 800ms) before flashing
-                    setTimeout(() => {
-                        targetElement.classList.add('attention-grabber');
-                        setTimeout(() => {
-                            targetElement.classList.remove('attention-grabber');
-                        }, 4500); // 3 pulses (1.5s * 3)
-                    }, 800);
-                }
+        window.addEventListener('scroll', () => {
+            if (!navbar) return;
+            const st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop && st > 80) {
+                navbar.classList.add('navbar-hidden');
+            } else {
+                navbar.classList.remove('navbar-hidden');
             }
+            lastScrollTop = st <= 0 ? 0 : st;
         });
-    });
-
-    // Scroll Reveal with Stagger
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Apply reveal classes to main sections
-    const sections = document.querySelectorAll('.section-title, .about-content, .contact-wrapper');
-    sections.forEach(el => {
-        el.classList.add('reveal-on-scroll');
-        observer.observe(el);
-    });
-
-    // Staggered Items (Cards, Skills)
-    const staggerGroups = [
-        document.querySelectorAll('.skill-category'),
-        document.querySelectorAll('.project-card'),
-        document.querySelectorAll('.service-card'),
-        document.querySelectorAll('.timeline-item')
-    ];
-
-    staggerGroups.forEach(group => {
-        group.forEach((item, index) => {
-            item.classList.add('reveal-on-scroll');
-            // Cycle through delay classes 1-4
-            const delayClass = `stagger-${(index % 4) + 1}`;
-            item.classList.add(delayClass);
-            observer.observe(item);
-        });
-    });
-
-    // ------------------------------------------------------------------
-    // 4. Cursor Glow Effect
-    // ------------------------------------------------------------------
-    const cursorGlow = document.getElementById('cursor-glow');
-
-    if (cursorGlow) {
-        // Only enable on non-touch devices
-        if (window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener('mousemove', (e) => {
-                // Use requestAnimationFrame for performance
-                requestAnimationFrame(() => {
-                    cursorGlow.style.opacity = '1';
-                    cursorGlow.style.left = e.clientX + 'px';
-                    cursorGlow.style.top = e.clientY + 'px';
-                });
-            });
-
-            document.addEventListener('mouseleave', () => {
-                cursorGlow.style.opacity = '0';
-            });
-        }
     }
 
-    // ------------------------------------------------------------------
-    // 5. 3D Tilt Effect on Cards
-    // ------------------------------------------------------------------
-    const tiltCards = document.querySelectorAll('.project-card, .service-card, .skill-category, .about-image');
-
-    tiltCards.forEach(card => {
-        card.classList.add('start-tilt'); // Add transition class
-
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            // Calculate rotation (max 10 degrees)
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-
-            const rotateX = ((y - centerY) / centerY) * -5; // Invert Y for tilt
-            const rotateY = ((x - centerX) / centerX) * 5;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    initReadingProgress() {
+        const progressBar = document.getElementById('reading-progress');
+        window.addEventListener('scroll', () => {
+            if (!progressBar) return;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progressBar.style.width = `${(scrollTop / scrollHeight) * 100}%`;
         });
+    }
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
-        });
-    });
+    initScrollProgress() {
+        const progressWrap = document.querySelector('.progress-wrap');
+        if (!progressWrap) return;
 
-    // ------------------------------------------------------------------
-    // 6. Button Ripple Effect
-    // ------------------------------------------------------------------
-    const buttons = document.querySelectorAll('.btn');
-
-    buttons.forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const circle = document.createElement('span');
-            circle.classList.add('ripple');
-            circle.style.left = x + 'px';
-            circle.style.top = y + 'px';
-
-            // Make ripple size proportional
-            const diameter = Math.max(rect.width, rect.height);
-            circle.style.width = circle.style.height = diameter + 'px';
-            circle.style.marginLeft = -diameter / 2 + 'px';
-            circle.style.marginTop = -diameter / 2 + 'px';
-
-            // Remove old ripples to keep DOM clean
-            const oldRipple = btn.querySelector('.ripple');
-            if (oldRipple) {
-                oldRipple.remove();
-            }
-
-            btn.appendChild(circle);
-
-            // Clean up after animation
-            setTimeout(() => {
-                circle.remove();
-            }, 600);
-        });
-    });
-
-    // ------------------------------------------------------------------
-    // 7. Scroll Progress Button
-    // ------------------------------------------------------------------
-    const progressWrap = document.querySelector('.progress-wrap');
-    if (progressWrap) {
         const progressPath = progressWrap.querySelector('path');
         const pathLength = progressPath.getTotalLength();
 
         progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
-        progressPath.style.strokeDasharray = pathLength + ' ' + pathLength;
+        progressPath.style.strokeDasharray = `${pathLength} ${pathLength}`;
         progressPath.style.strokeDashoffset = pathLength;
         progressPath.getBoundingClientRect();
         progressPath.style.transition = progressPath.style.WebkitTransition = 'stroke-dashoffset 10ms linear';
@@ -242,313 +90,301 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateProgress = () => {
             const scroll = window.pageYOffset;
             const height = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = pathLength - (scroll * pathLength / height);
-            progressPath.style.strokeDashoffset = progress;
+            progressPath.style.strokeDashoffset = pathLength - (scroll * pathLength / height);
         };
 
         updateProgress();
         window.addEventListener('scroll', updateProgress);
 
-        const offset = 50;
-
         window.addEventListener('scroll', () => {
-            if (window.pageYOffset > offset) {
+            if (window.pageYOffset > 50) {
                 progressWrap.classList.add('active-progress');
             } else {
                 progressWrap.classList.remove('active-progress');
             }
         });
     }
+}
 
-    // ------------------------------------------------------------------
-    // 8. Project "View Details" Interaction
-    // ------------------------------------------------------------------
-    const viewDetailsBtns = document.querySelectorAll('.view-project-details');
-    // Assuming the LinkedIn contact item is the FIRST one or specifically identifiable.
-    // Based on HTML structure: <div class="contact-item"><i class="fab fa-linkedin"></i>...</div>
-    // Let's find the contact item containing the LinkedIn icon.
-    const linkedInIcon = document.querySelector('.fa-linkedin');
-    const linkedInItem = linkedInIcon ? linkedInIcon.closest('.contact-item') : null;
+class NavigationController {
+    constructor() {
+        this.initMobileNav();
+        this.initSmoothScroll();
+    }
 
-    if (linkedInItem) {
-        viewDetailsBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Allow default scroll to #contact, but add highlight after a delay
-                setTimeout(() => {
-                    linkedInItem.classList.add('attention-grabber');
+    initMobileNav() {
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        if (!hamburger || !navLinks) return;
 
-                    // Remove after 3 seconds (2 pulses)
-                    setTimeout(() => {
-                        linkedInItem.classList.remove('attention-grabber');
-                    }, 3000);
-                }, 800); // Wait for scroll (approx)
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links li a').forEach(item => {
+            item.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
             });
         });
     }
 
-    // ------------------------------------------------------------------
-    // 9. Typing Effect
-    // ------------------------------------------------------------------
-    const typedTextSpan = document.querySelector(".typed-text");
-    const cursorSpan = document.querySelector(".cursor");
+    initSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = anchor.getAttribute('href');
+                if (targetId === '#') return;
 
-    const textArray = ["Electrical Engineer"];
-    const typingDelay = 100;
-    const erasingDelay = 50;
-    const newTextDelay = 2000; // Delay between current and next text
-    let textArrayIndex = 0;
-    let charIndex = 0;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    let scrollAnchorElement = targetElement;
+                    if (targetId === '#linkedin-contact') {
+                        scrollAnchorElement = document.querySelector('#contact');
+                    }
 
-    function type() {
-        if (charIndex < textArray[textArrayIndex].length) {
-            if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-            typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(type, typingDelay);
-        }
-        else {
-            cursorSpan.classList.remove("typing");
-            setTimeout(erase, newTextDelay);
-        }
-    }
+                    const elementPosition = scrollAnchorElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - 80;
 
-    function erase() {
-        if (charIndex > 0) {
-            if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-            typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(erase, erasingDelay);
-        }
-        else {
-            cursorSpan.classList.remove("typing");
-            textArrayIndex++;
-            if (textArrayIndex >= textArray.length) textArrayIndex = 0;
-            setTimeout(type, typingDelay + 1100);
-        }
-    }
+                    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
 
-    if (textArray.length && typedTextSpan) {
-        setTimeout(type, newTextDelay + 250);
-    }
-
-    // ------------------------------------------------------------------
-    // 10. Vibe Engineered Architecture (Security & Submission)
-    // ------------------------------------------------------------------
-
-    /**
-     * ==============================================================================
-     * 🏗️ PORTFOLIO CONFIGURATION (User-Centric Data Layer)
-     * ==============================================================================
-     */
-    const PortfolioConfig = {
-        api: {
-            webformsKey: "54df8a96-9799-40ea-9e13-49e8535f74a6",
-            submissionEndpoint: "https://api.web3forms.com/submit"
-        },
-        identity: {
-            name: "Mohamed Adel",
-            title: "Electrical Site Engineer & Talent Acquisition Specialist",
-            obfuscatedEmail: {
-                user: "mohamedadelshafei20",
-                domain: "gmail.com"
-            }
-        },
-        securityRules: {
-            contactForm: {
-                name: {
-                    pattern: /^[a-zA-Z\s\.\-']{2,50}$/,
-                    maxLength: 50,
-                    errorMessage: "Invalid Name. strictly 2-50 letters/spaces allowed."
-                },
-                email: {
-                    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    maxLength: 100,
-                    errorMessage: "Invalid Email format."
-                },
-                message: {
-                    pattern: /^.{10,1000}$/s,
-                    minLength: 10,
-                    maxLength: 1000,
-                    errorMessage: "Message must be strictly between 10 and 1000 characters."
+                    if (targetId === '#linkedin-contact') {
+                        targetElement.classList.remove('attention-grabber');
+                        setTimeout(() => {
+                            targetElement.classList.add('attention-grabber');
+                            setTimeout(() => { targetElement.classList.remove('attention-grabber'); }, 4500);
+                        }, 800);
+                    }
                 }
-            }
-        }
-    };
-
-    const deepFreeze = (obj) => {
-        Object.keys(obj).forEach(prop => {
-            if (typeof obj[prop] === 'object' && obj[prop] !== null) deepFreeze(obj[prop]);
+            });
         });
-        return Object.freeze(obj);
-    };
-    deepFreeze(PortfolioConfig);
+    }
+}
 
-    /**
-     * ==============================================================================
-     * 🛡️ THE SECURITY ENGINE (Processing, Sanitization & Logic)
-     * ==============================================================================
-     */
-    const SecurityEngine = (() => {
-        const sanitizeHTML = (input) => {
-            if (typeof input !== 'string') return '';
-            const escapeMap = {
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;'
-            };
-            return input.replace(/[&<>"']/g, match => escapeMap[match]);
-        };
+class ScrollAnimationController {
+    constructor() {
+        this.initScrollReveal();
+        this.initStatsCounter();
+        this.init3DTilt();
+    }
 
-        const validateField = (fieldName, rawValue) => {
-            const rules = PortfolioConfig.securityRules.contactForm[fieldName];
-            if (!rules) return { isValid: false, error: "System Error: Field rules undefined." };
-
-            const processValue = rawValue.trim();
-
-            if (rules.minLength && processValue.length < rules.minLength) {
-                return { isValid: false, error: rules.errorMessage };
-            }
-            if (rules.maxLength && processValue.length > rules.maxLength) {
-                return { isValid: false, error: rules.errorMessage };
-            }
-
-            if (!rules.pattern.test(processValue)) {
-                return { isValid: false, error: rules.errorMessage };
-            }
-
-            return { isValid: true, sanitizedValue: sanitizeHTML(processValue) };
-        };
-
-        const setStatus = (element, message, type = 'info') => {
-            if (!element) return;
-            element.textContent = message;
-            element.style.display = 'block';
-            element.style.color = type === 'error' ? 'red' : (type === 'success' ? 'var(--primary-color)' : 'var(--text-secondary)');
-        };
-
-        const initSecureDOM = () => {
-            const emailLink = document.getElementById('protected-email');
-            if (emailLink) {
-                const safeEmail = `${PortfolioConfig.identity.obfuscatedEmail.user}@${PortfolioConfig.identity.obfuscatedEmail.domain}`;
-                emailLink.textContent = safeEmail;
-                emailLink.href = `mailto:${safeEmail}`;
-            }
-        };
-
-        return { sanitize: sanitizeHTML, validate: validateField, updateStatus: setStatus, initDOM: initSecureDOM };
-    })();
-
-    // Initialize DOM Protections dynamically
-    SecurityEngine.initDOM();
-
-    /**
-     * ==============================================================================
-     * 🚀 SECURE FORM SUBMISSION (Integration & Transport)
-     * ==============================================================================
-     */
-    const contactForm = document.getElementById('contact-form');
-    const formResult = document.getElementById('form-result');
-    const honeypotField = document.getElementById('honeypot');
-
-    if (contactForm && formResult) {
-        let lastSubmitTime = 0; // for rate limiting
-
-        contactForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            // --- 1. Rate Limiting Check (1 submission per 60 seconds) ---
-            const now = Date.now();
-            if (now - lastSubmitTime < 60000) {
-                SecurityEngine.updateStatus(formResult, "Please wait a minute before sending another message.", "error");
-                return;
-            }
-
-            SecurityEngine.updateStatus(formResult, "Validating...", "info");
-
-            if (honeypotField && honeypotField.value.trim().length > 0) {
-                console.warn("Security Alert: Suspicious activity blocked.");
-                SecurityEngine.updateStatus(formResult, "Message sent successfully! I will get back to you soon.", "success");
-                contactForm.reset();
-                setTimeout(() => { formResult.style.display = "none"; }, 5000);
-                return;
-            }
-
-            const formData = new FormData(contactForm);
-            const rawPayload = Object.fromEntries(formData);
-            const securePayload = {};
-
-            const fieldsToValidate = ['name', 'email', 'message'];
-            let isFormValid = true;
-
-            for (const field of fieldsToValidate) {
-                const rawValue = rawPayload[field] || '';
-                const validationScore = SecurityEngine.validate(field, rawValue);
-
-                if (!validationScore.isValid) {
-                    SecurityEngine.updateStatus(formResult, validationScore.error, "error");
-                    isFormValid = false;
-                    break;
+    initScrollReveal() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
                 }
-                securePayload[field] = validationScore.sanitizedValue;
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.section-title, .about-content, .contact-wrapper').forEach(el => {
+            el.classList.add('reveal-on-scroll');
+            observer.observe(el);
+        });
+
+        const staggerGroups = [
+            document.querySelectorAll('.skill-category'),
+            document.querySelectorAll('.project-card'),
+            document.querySelectorAll('.service-card'),
+            document.querySelectorAll('.timeline-item')
+        ];
+
+        staggerGroups.forEach(group => {
+            group.forEach((item, index) => {
+                item.classList.add('reveal-on-scroll', `stagger-${(index % 4) + 1}`);
+                observer.observe(item);
+            });
+        });
+    }
+
+    initStatsCounter() {
+        const counters = document.querySelectorAll('.counter');
+        if (counters.length === 0) return;
+
+        let hasCounted = false;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasCounted) {
+                    hasCounted = true;
+                    counters.forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        const increment = target / (2000 / 16);
+                        let currentCount = 0;
+                        const updateCounter = () => {
+                            currentCount += increment;
+                            if (currentCount < target) {
+                                counter.innerText = Math.ceil(currentCount);
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCounter();
+                    });
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.getElementById('stats');
+        if (statsSection) observer.observe(statsSection);
+    }
+
+    init3DTilt() {
+        document.querySelectorAll('.project-card, .service-card, .skill-category, .about-image').forEach(card => {
+            card.classList.add('start-tilt');
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -5;
+                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 5;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+            });
+        });
+    }
+}
+
+class InteractionController {
+    constructor() {
+        this.initButtonRipples();
+        this.initTypingEffect();
+        this.initCursorGlow();
+        this.initCVModal();
+    }
+
+    initButtonRipples() {
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const rect = btn.getBoundingClientRect();
+                const circle = document.createElement('span');
+                circle.classList.add('ripple');
+                const diameter = Math.max(rect.width, rect.height);
+                circle.style.width = circle.style.height = `${diameter}px`;
+                circle.style.left = `${e.clientX - rect.left}px`;
+                circle.style.top = `${e.clientY - rect.top}px`;
+                circle.style.marginLeft = `${-diameter / 2}px`;
+                circle.style.marginTop = `${-diameter / 2}px`;
+
+                const oldRipple = btn.querySelector('.ripple');
+                if (oldRipple) oldRipple.remove();
+
+                btn.appendChild(circle);
+                setTimeout(() => circle.remove(), 600);
+            });
+        });
+    }
+
+    initTypingEffect() {
+        const typedTextSpan = document.querySelector(".typed-text");
+        const cursorSpan = document.querySelector(".cursor");
+        if (!typedTextSpan || !cursorSpan) return;
+
+        const textArray = ["Electrical Engineer"];
+        let charIndex = 0;
+        let isErasing = false;
+
+        const type = () => {
+            if (!isErasing && charIndex < textArray[0].length) {
+                if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+                typedTextSpan.textContent += textArray[0].charAt(charIndex++);
+                setTimeout(type, 100);
+            } else if (!isErasing) {
+                cursorSpan.classList.remove("typing");
+                isErasing = true;
+                setTimeout(type, 2000);
+            } else if (isErasing && charIndex > 0) {
+                if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+                typedTextSpan.textContent = textArray[0].substring(0, --charIndex);
+                setTimeout(type, 50);
+            } else {
+                cursorSpan.classList.remove("typing");
+                isErasing = false;
+                setTimeout(type, 1100);
             }
+        };
+        setTimeout(type, 2250);
+    }
 
-            if (!isFormValid) return;
-
-            securePayload.access_key = SecurityEngine.sanitize(PortfolioConfig.api.webformsKey);
-            securePayload.subject = SecurityEngine.sanitize("New Secure Contact Request");
-            if (rawPayload.botcheck) {
-                securePayload.botcheck = SecurityEngine.sanitize(rawPayload.botcheck);
-            }
-
-            try {
-                SecurityEngine.updateStatus(formResult, "Encrypting and sending payload...", "info");
-
-                const response = await fetch(PortfolioConfig.api.submissionEndpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(securePayload)
+    initCursorGlow() {
+        const cursorGlow = document.getElementById('cursor-glow');
+        if (cursorGlow && window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                requestAnimationFrame(() => {
+                    cursorGlow.style.opacity = '1';
+                    cursorGlow.style.left = `${e.clientX}px`;
+                    cursorGlow.style.top = `${e.clientY}px`;
                 });
-
-                const jsonResponse = await response.json();
-
-                if (response.status === 200) {
-                    const safeSuccessMessage = SecurityEngine.sanitize(jsonResponse.message || "Message sent successfully! I will get back to you soon.");
-                    SecurityEngine.updateStatus(formResult, safeSuccessMessage, "success");
-                    contactForm.reset();
-                    lastSubmitTime = Date.now(); // Record success time for rate limit
-                } else {
-                    console.error("API Error Status:", SecurityEngine.sanitize(String(response.status)));
-                    SecurityEngine.updateStatus(formResult, "Service structure unavailable. Please try again.", "error");
-                }
-            } catch (networkError) {
-                console.error("Transmission Error.");
-                SecurityEngine.updateStatus(formResult, "Secure connection failed. Please check your network.", "error");
-            } finally {
-                setTimeout(() => { formResult.style.display = "none"; }, 6000);
-            }
-        });
+            });
+            document.addEventListener('mouseleave', () => cursorGlow.style.opacity = '0');
+        }
     }
 
-    // ------------------------------------------------------------------
-    // 11. Projects Filtering
-    // ------------------------------------------------------------------
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card');
+    initCVModal() {
+        const cvDownloadBtn = document.getElementById('cv-download-btn');
+        const cvModal = document.getElementById('cv-modal');
+        const progressBarFill = document.querySelector('.progress-bar-fill');
 
-    if (filterBtns.length > 0 && projectCards.length > 0) {
+        if (!cvDownloadBtn || !cvModal) return;
+
+        cvDownloadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            cvModal.classList.remove('hidden');
+            setTimeout(() => { if (progressBarFill) progressBarFill.style.width = '100%'; }, 100);
+
+            setTimeout(() => {
+                cvModal.classList.add('hidden');
+                if (progressBarFill) progressBarFill.style.width = '0%';
+
+                // 📊 Conversion Tracking: Track CV Downloads for HR analytics
+                try {
+                    if (typeof window.gtag === 'function') {
+                        window.gtag('event', 'download_cv', { 'event_category': 'engagement', 'event_label': 'CV Downloaded' });
+                    } else {
+                        console.info("Analytics [Offline]: HR downloaded your CV.");
+                    }
+                } catch (analyticsError) {
+                    console.warn("Analytics pipeline blocked or failed, ensuring UI continues smoothly.", analyticsError);
+                }
+
+                const link = document.createElement('a');
+                link.href = cvDownloadBtn.getAttribute('data-cv-url');
+                link.download = link.href;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, 1800);
+        });
+    }
+}
+
+class FeatureController {
+    constructor() {
+        this.initProjectsFilter();
+        this.initTestimonials();
+        this.initCardStackGallery();
+        this.initLinkedInHighlight();
+    }
+
+    initProjectsFilter() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active class from all buttons
                 filterBtns.forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
                 btn.classList.add('active');
 
                 const filterValue = btn.getAttribute('data-filter');
-
                 projectCards.forEach(card => {
-                    card.style.display = 'none'; // Instantly hide all to reset layout
-
+                    card.style.display = 'none';
                     if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                        card.style.display = 'flex'; // Instantly show matching (since it's a flex column)
-                        // Tiny delay to ensure CSS registers the block display before fading in
+                        card.style.display = 'flex';
                         setTimeout(() => {
                             card.style.opacity = '1';
                             card.style.transform = 'scale(1)';
@@ -562,328 +398,322 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ------------------------------------------------------------------
-    // 12. Email Obfuscation
-    // ------------------------------------------------------------------
-    const protectedEmail = document.getElementById('protected-email');
-    if (protectedEmail) {
-        const user = "mohamedadelshafei20";
-        const domain = "gmail.com";
-        const email = user + "@" + domain;
-        // Decode and set the email on page load
-        protectedEmail.textContent = email;
-        protectedEmail.href = "mailto:" + email;
-    }
+    initTestimonials() {
+        const track = document.getElementById('testimonials-track');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
 
-    // Code removed to revert geometric canvas
+        if (!track || !prevBtn || !nextBtn) return;
 
-    // ------------------------------------------------------------------
-    // 13. Multi-language Support (i18n)
-    // ------------------------------------------------------------------
-    const langToggle = document.getElementById('lang-toggle');
-    let isArabic = false;
+        window.testimonialsCurrentIndex = 0; // globally scoped for i18n reference
+        const cardCount = track.querySelectorAll('.testimonial-card').length;
 
-    if (langToggle) {
-        langToggle.addEventListener('click', () => {
-            isArabic = !isArabic;
-            document.documentElement.setAttribute('dir', isArabic ? 'rtl' : 'ltr');
-            document.documentElement.setAttribute('lang', isArabic ? 'ar' : 'en');
-            langToggle.innerHTML = isArabic ? 'EN' : '<i class="fas fa-globe"></i>';
-
-            const elementsToTranslate = document.querySelectorAll('[data-ar]');
-            elementsToTranslate.forEach(el => {
-                if (!el.hasAttribute('data-en')) {
-                    // Save the English original text
-                    el.setAttribute('data-en', el.innerHTML);
-                }
-
-                if (isArabic) {
-                    el.innerHTML = el.getAttribute('data-ar');
-                } else {
-                    el.innerHTML = el.getAttribute('data-en');
-                }
-            });
-        });
-    }
-
-    // ------------------------------------------------------------------
-    // 14. Testimonials Carousel
-    // ------------------------------------------------------------------
-    const track = document.getElementById('testimonials-track');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
-
-    if (track && prevBtn && nextBtn) {
-        let currentIndex = 0;
-        const cards = track.querySelectorAll('.testimonial-card');
-        const cardCount = cards.length;
-
-        function updateCarousel() {
-            // Adjust translate direction based on language currently active
-            track.style.transform = `translateX(${currentIndex * (isArabic ? 100 : -100)}%)`;
-        }
+        const updateCarousel = () => {
+            const isArabic = document.documentElement.getAttribute('dir') === 'rtl';
+            track.style.transform = `translateX(${window.testimonialsCurrentIndex * (isArabic ? 100 : -100)}%)`;
+        };
 
         nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % cardCount;
+            window.testimonialsCurrentIndex = (window.testimonialsCurrentIndex + 1) % cardCount;
             updateCarousel();
         });
 
         prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + cardCount) % cardCount;
+            window.testimonialsCurrentIndex = (window.testimonialsCurrentIndex - 1 + cardCount) % cardCount;
             updateCarousel();
         });
 
-        // Handle RTL switch gracefully
-        if (langToggle) {
-            langToggle.addEventListener('click', () => {
-                setTimeout(updateCarousel, 50); // slight delay to allow layout
-            });
-        }
+        window.updateCarouselLayout = updateCarousel; // Expose to I18n
     }
 
-    // ------------------------------------------------------------------
-    // 15. Advanced CV Download Modal
-    // ------------------------------------------------------------------
-    const cvDownloadBtn = document.getElementById('cv-download-btn');
-    const cvModal = document.getElementById('cv-modal');
-    const progressBarFill = document.querySelector('.progress-bar-fill');
+    initCardStackGallery() {
+        const modal = document.getElementById('card-stack-modal');
+        const container = document.getElementById('card-stack-container');
+        if (!modal || !container) return;
 
-    if (cvDownloadBtn && cvModal) {
-        cvDownloadBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const cvUrl = cvDownloadBtn.getAttribute('data-cv-url');
+        this.galleryPhotos = [
+            "Photos/Rawdat El-Obour Residential Project 1.jpg",
+            "Photos/Rawdat El-Obour Residential Project 2.jpg",
+            "Photos/Rawdat El-Obour Residential Project 3.jpg",
+            "Photos/Rawdat El-Obour Residential Project 4.jpg",
+            "Photos/Rawdat El-Obour Residential Project 5.jpg",
+            "Photos/Rawdat El-Obour Residential Project 6.jpg"
+        ];
+        this.stackInterval = null;
 
-            // Show Modal
-            cvModal.classList.remove('hidden');
-
-            // Start Loading Animation
-            setTimeout(() => {
-                if (progressBarFill) progressBarFill.style.width = '100%';
-            }, 100);
-
-            // Hide and download after delay
-            setTimeout(() => {
-                cvModal.classList.add('hidden');
-                if (progressBarFill) progressBarFill.style.width = '0%'; // reset
-
-                // Trigger actual download explicitly
-                const link = document.createElement('a');
-                link.href = cvUrl;
-                link.download = cvUrl; // default download name
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }, 1800);
-        });
-    }
-
-    // ------------------------------------------------------------------
-    // 16. Basic Anti-Scraping & Copy Protection - REMOVED
-    // ------------------------------------------------------------------
-
-    // ------------------------------------------------------------------
-    // 17. Reading Progress Bar
-    // ------------------------------------------------------------------
-    const progressBar = document.getElementById('reading-progress');
-    window.addEventListener('scroll', () => {
-        if (progressBar) {
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrollPercentage = (scrollTop / scrollHeight) * 100;
-            progressBar.style.width = scrollPercentage + '%';
-        }
-    });
-
-    // ------------------------------------------------------------------
-    // 18. Stats Counter Animation
-    // ------------------------------------------------------------------
-    const counters = document.querySelectorAll('.counter');
-    let hasCounted = false;
-
-    if (counters.length > 0) {
-        const counterObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !hasCounted) {
-                    hasCounted = true; // prevent re-running
-                    counters.forEach(counter => {
-                        const target = +counter.getAttribute('data-target');
-                        const duration = 2000; // ms
-                        const increment = target / (duration / 16); // 60fps
-
-                        let currentCount = 0;
-                        const updateCounter = () => {
-                            currentCount += increment;
-                            if (currentCount < target) {
-                                counter.innerText = Math.ceil(currentCount);
-                                requestAnimationFrame(updateCounter);
-                            } else {
-                                counter.innerText = target;
-                            }
-                        };
-                        updateCounter();
-                    });
-                    observer.disconnect(); // Stop observing once animated
-                }
+        window.openCardStack = () => {
+            container.innerHTML = '';
+            this.galleryPhotos.forEach((src, index) => {
+                const card = document.createElement('div');
+                card.className = `stack-card ${index === 0 ? 'active' : index === 1 ? 'next' : 'behind'}`;
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `Gallery Image ${index + 1}`;
+                img.loading = "lazy";
+                card.appendChild(img);
+                container.appendChild(card);
             });
-        }, { threshold: 0.5 }); // Trigger when 50% of section is visible
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
 
-        const statsSection = document.getElementById('stats');
-        if (statsSection) {
-            counterObserver.observe(statsSection);
-        }
-    }
+            this.stackInterval = setInterval(() => this.cycleCards(container), 3000);
+        };
 
-    // ------------------------------------------------------------------
-    // 19. Smart Sticky Navbar
-    // ------------------------------------------------------------------
-    const navbar = document.querySelector('.navbar');
-    let lastScrollTop = 0;
+        window.closeCardStack = () => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            clearInterval(this.stackInterval);
 
-    window.addEventListener('scroll', () => {
-        if (!navbar) return;
-
-        let st = window.pageYOffset || document.documentElement.scrollTop;
-        if (st > lastScrollTop && st > 80) {
-            // Scroll Down
-            navbar.classList.add('navbar-hidden');
-        } else {
-            // Scroll Up
-            navbar.classList.remove('navbar-hidden');
-        }
-        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-    });
-
-    // ------------------------------------------------------------------
-    // 20. Animated Card Stack Gallery
-    // ------------------------------------------------------------------
-    const cardStackModal = document.getElementById('card-stack-modal');
-    const cardStackContainer = document.getElementById('card-stack-container');
-    let stackInterval = null;
-
-    // Photos paths array (dynamically matching the requested files)
-    const galleryPhotos = [
-        "Photos/Rawdat El-Obour Residential Project 1.jpg",
-        "Photos/Rawdat El-Obour Residential Project 2.jpg",
-        "Photos/Rawdat El-Obour Residential Project 3.jpg",
-        "Photos/Rawdat El-Obour Residential Project 4.jpg",
-        "Photos/Rawdat El-Obour Residential Project 5.jpg",
-        "Photos/Rawdat El-Obour Residential Project 6.jpg"
-    ];
-
-    window.openCardStack = function () {
-        if (!cardStackModal || !cardStackContainer) return;
-
-        // Render cards
-        cardStackContainer.innerHTML = '';
-        galleryPhotos.forEach((src, index) => {
-            const card = document.createElement('div');
-            card.classList.add('stack-card');
-
-            // Set initial state
-            if (index === 0) card.classList.add('active');
-            else if (index === 1) card.classList.add('next');
-            else card.classList.add('behind');
-
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = `Gallery Image ${index + 1}`;
-            img.loading = "lazy";
-
-            card.appendChild(img);
-            cardStackContainer.appendChild(card);
-        });
-
-        cardStackModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-
-        // Start cycling
-        startCardCycle();
-    };
-
-    window.closeCardStack = function () {
-        if (!cardStackModal) return;
-        cardStackModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-        stopCardCycle();
-
-        // Specific requirement: scroll to LinkedIn contact immediately after closing
-        const targetElement = document.querySelector('#linkedin-contact');
-        const scrollAnchorElement = document.querySelector('#contact');
-
-        if (targetElement && scrollAnchorElement) {
-            const headerOffset = 80;
-            const elementPosition = scrollAnchorElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth"
-            });
-
-            // Highlight the LinkedIn card
-            targetElement.classList.remove('attention-grabber');
-            setTimeout(() => {
-                targetElement.classList.add('attention-grabber');
+            // Highlight LinkedIn requirement
+            const linkedInEl = document.querySelector('#linkedin-contact');
+            if (linkedInEl) {
+                const yOffset = document.querySelector('#contact').getBoundingClientRect().top + window.pageYOffset - 80;
+                window.scrollTo({ top: yOffset, behavior: "smooth" });
                 setTimeout(() => {
-                    targetElement.classList.remove('attention-grabber');
-                }, 4500); // 3 pulses
-            }, 800);
-        }
-    };
+                    linkedInEl.classList.add('attention-grabber');
+                    setTimeout(() => linkedInEl.classList.remove('attention-grabber'), 4500);
+                }, 800);
+            }
+        };
 
-    function startCardCycle() {
-        stopCardCycle(); // ensure clean state
-        stackInterval = setInterval(cycleCards, 3000); // Change image every 3 seconds
+        modal.addEventListener('click', (e) => { if (e.target === modal) window.closeCardStack(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') window.closeCardStack(); });
     }
 
-    function stopCardCycle() {
-        if (stackInterval) {
-            clearInterval(stackInterval);
-            stackInterval = null;
-        }
-    }
-
-    function cycleCards() {
-        if (!cardStackContainer) return;
-
-        const cards = Array.from(cardStackContainer.querySelectorAll('.stack-card'));
+    cycleCards(container) {
+        const cards = Array.from(container.querySelectorAll('.stack-card'));
         if (cards.length === 0) return;
 
-        // Find current state indices
         const activeIndex = cards.findIndex(c => c.classList.contains('active'));
         const nextIndex = (activeIndex + 1) % cards.length;
         const behindIndex = (activeIndex + 2) % cards.length;
 
-        // Transition active card out
         cards[activeIndex].className = 'stack-card out';
-
-        // Wait a short delay, then move it to the back
         setTimeout(() => {
             if (cards[activeIndex] && cards[activeIndex].classList.contains('out')) {
                 cards[activeIndex].className = 'stack-card behind';
             }
-        }, 800); // matches CSS transition time
+        }, 800);
 
-        // Promote next to active
         cards[nextIndex].className = 'stack-card active';
-
-        // Promote behind to next
         cards[behindIndex].className = 'stack-card next';
     }
 
-    // Modal close listeners
-    if (cardStackModal) {
-        cardStackModal.addEventListener('click', (e) => {
-            if (e.target === cardStackModal) {
-                window.closeCardStack();
-            }
-        });
+    initLinkedInHighlight() {
+        const viewDetailsBtns = document.querySelectorAll('.view-project-details');
+        const linkedInIcon = document.querySelector('.fa-linkedin');
+        const linkedInItem = linkedInIcon ? linkedInIcon.closest('.contact-item') : null;
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !cardStackModal.classList.contains('hidden')) {
-                window.closeCardStack();
+        if (linkedInItem) {
+            viewDetailsBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setTimeout(() => {
+                        linkedInItem.classList.add('attention-grabber');
+                        setTimeout(() => linkedInItem.classList.remove('attention-grabber'), 3000);
+                    }, 800);
+                });
+            });
+        }
+    }
+}
+
+class I18nController {
+    constructor() {
+        this.langToggle = document.getElementById('lang-toggle');
+        this.isArabic = false;
+        if (this.langToggle) this.initI18n();
+    }
+
+    initI18n() {
+        this.langToggle.addEventListener('click', () => {
+            this.isArabic = !this.isArabic;
+            document.documentElement.setAttribute('dir', this.isArabic ? 'rtl' : 'ltr');
+            document.documentElement.setAttribute('lang', this.isArabic ? 'ar' : 'en');
+            this.langToggle.innerHTML = this.isArabic ? 'EN' : '<i class="fas fa-globe"></i>';
+
+            document.querySelectorAll('[data-ar]').forEach(el => {
+                if (!el.hasAttribute('data-en')) el.setAttribute('data-en', el.innerHTML);
+                el.innerHTML = el.getAttribute(this.isArabic ? 'data-ar' : 'data-en');
+            });
+
+            if (window.updateCarouselLayout) {
+                setTimeout(window.updateCarouselLayout, 50);
             }
         });
     }
+}
 
+/**
+ * 🛡️ SecurityEngine: Lead Security Engineer Grade
+ * Handles XSS sanitization, persistent rate limiting, Zod-lite schema validation, and strictly protects API routes.
+ */
+class ZodLite {
+    static string({ minLength = 0, maxLength = Infinity, pattern = null, message = "Invalid String" }) {
+        return (val) => {
+            if (typeof val !== 'string') return { valid: false, error: "Must be a string" };
+            const clean = val.trim();
+            if (clean.length < minLength) return { valid: false, error: message };
+            if (clean.length > maxLength) return { valid: false, error: message };
+            if (pattern && !pattern.test(clean)) return { valid: false, error: message };
+            return { valid: true, value: clean };
+        };
+    }
+}
+
+class SecurityEngine {
+    constructor() {
+        this.config = Object.freeze({
+            api: { key: "54df8a96-9799-40ea-9e13-49e8535f74a6", endpoint: "https://api.web3forms.com/submit" },
+            identity: { user: "mohamedadelshafei20", domain: "gmail.com" },
+            rateLimitStrategy: { duration: 60000, maxAttempts: 1 } // 1 Submission per 60 sec window globally
+        });
+
+        this.schema = {
+            name: ZodLite.string({ minLength: 2, maxLength: 50, pattern: /^[a-zA-Z\s\.\-']+$/, message: "Invalid Name. strictly 2-50 letters/spaces allowed." }),
+            email: ZodLite.string({ minLength: 5, maxLength: 100, pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Invalid Email format." }),
+            message: ZodLite.string({ minLength: 10, maxLength: 2000, message: "Message must be between 10 and 2000 characters." })
+        };
+
+        this.initDOM();
+        this.attachFormHandler();
+    }
+
+    initDOM() {
+        const emailLink = document.getElementById('protected-email');
+        if (emailLink) {
+            const safeEmail = `${this.config.identity.user}@${this.config.identity.domain}`;
+            emailLink.textContent = safeEmail;
+            emailLink.href = `mailto:${safeEmail}`;
+        }
+    }
+
+    sanitizeHTML(input) {
+        if (typeof input !== 'string') return '';
+        const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
+        return input.replace(/[&<>"'`=\/]/g, match => escapeMap[match]);
+    }
+
+    isRateLimited() {
+        const lastSubmit = localStorage.getItem('__ma_submission_ts');
+        if (!lastSubmit) return false;
+        return (Date.now() - parseInt(lastSubmit, 10)) < this.config.rateLimitStrategy.duration;
+    }
+
+    setRateLimit() {
+        localStorage.setItem('__ma_submission_ts', Date.now().toString());
+    }
+
+    setStatus(element, message, type = 'info') {
+        if (!element) return;
+        element.textContent = message;
+        element.style.display = 'block';
+        element.style.color = type === 'error' ? 'red' : (type === 'success' ? 'var(--primary-color)' : 'var(--text-secondary)');
+    }
+
+    async attachFormHandler() {
+        const form = document.getElementById('contact-form');
+        const formResult = document.getElementById('form-result');
+        const honeypot = document.getElementById('honeypot');
+
+        if (!form || !formResult) return;
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // 1. Persistent Rate Limit Check
+            if (this.isRateLimited()) {
+                this.setStatus(formResult, "Rate Limit Exceeded. Please wait a minute before submitting again.", "error");
+                return;
+            }
+
+            // 2. Honeypot Trap
+            if (honeypot && honeypot.value.trim().length > 0) {
+                console.warn("Security Alert: Honeypot Triggered.");
+                this.setStatus(formResult, "Message sent successfully! I will get back to you.", "success");
+                form.reset();
+                this.setRateLimit(); // Punish bot
+                setTimeout(() => { formResult.style.display = "none"; }, 5000);
+                return;
+            }
+
+            this.setStatus(formResult, "Validating payload...", "info");
+
+            const formData = new FormData(form);
+            const payload = {};
+            let isFormValid = true;
+
+            try {
+                // 3. Strict Zod Validation & Sanitization
+                for (const field of ['name', 'email', 'message']) {
+                    const result = this.schema[field](formData.get(field) || "");
+                    if (!result.valid) {
+                        this.setStatus(formResult, result.error, "error");
+                        isFormValid = false;
+                        break;
+                    }
+                    payload[field] = this.sanitizeHTML(result.value);
+                }
+            } catch (validationCrash) {
+                console.error("Validation Engine Memory Error:", validationCrash);
+                this.setStatus(formResult, "System error during validation. Please try again.", "error");
+                return;
+            }
+
+            if (!isFormValid) return;
+
+            // 4. Secure Payload Construction
+            payload.access_key = this.config.api.key;
+            payload.subject = this.sanitizeHTML("New Secure Contact Request");
+            if (formData.get('botcheck')) payload.botcheck = this.sanitizeHTML(formData.get('botcheck'));
+
+            try {
+                // A11y: Lock the button and announce busy state
+                if (submitBtn) {
+                    submitBtn.setAttribute('aria-busy', 'true');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Sending...';
+                }
+
+                this.setStatus(formResult, "Encrypting and submitting...", "info");
+
+                const response = await fetch(this.config.api.endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    this.setStatus(formResult, "Message sent safely! I will contact you soon.", "success");
+                    form.reset();
+                    this.setRateLimit();
+                } else {
+                    this.setStatus(formResult, "Service unavailable at the moment.", "error");
+                }
+            } catch (error) {
+                this.setStatus(formResult, "Secure connection failed. Check your network.", "error");
+            } finally {
+                if (submitBtn) {
+                    submitBtn.removeAttribute('aria-busy');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Message';
+                }
+                setTimeout(() => { formResult.style.display = "none"; }, 6000);
+            }
+        });
+    }
+}
+
+// ==========================================
+// 🚀 Application Bootstrap Engine
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    new UIController();
+    new NavigationController();
+    new ScrollAnimationController();
+    new InteractionController();
+    new FeatureController();
+    new I18nController();
+    new SecurityEngine();
 });

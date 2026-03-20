@@ -8,6 +8,10 @@
     <meta name="description"
         content="Portfolio of Mohamed Adel, an Electrical Engineer specializing in site supervision, shop drawings, and MEP coordination.">
 
+    <!-- Content Security Policy (CSP) for Zero Trust Architecture -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://ui-avatars.com https://www.google-analytics.com; connect-src 'self' https://api.web3forms.com https://www.google-analytics.com;">
+
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:site_name" content="Mohamed Adel Portfolio">
     <meta property="og:locale" content="en_US">
@@ -33,6 +37,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Mohamed Adel",
+      "jobTitle": "Electrical Site Engineer",
+      "url": "https://mohamed-adel-shafei.github.io/my-website/",
+      "image": "https://mohamed-adel-shafei.github.io/my-website/images/Photo.jpg",
+      "sameAs": [
+        "https://www.linkedin.com/in/mohamed-adel-shafei",
+        "https://github.com/mohamed-adel-shafei"
+      ],
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Faculty of Engineering at Shoubra, Benha University"
+      },
+      "knowsAbout": ["Electrical Site Engineering", "MEP Coordination", "Shop Drawings", "Classic Control", "PLC", "AutoCAD"]
+    }
+    </script>
 </head>
 
 <body>
@@ -101,7 +126,8 @@
             <div class="about-content">
                 <div class="about-image fade-in">
                     <div class="image-container">
-                        <img src="images/Photo.jpg" alt="Mohamed Adel" class="profile-img" loading="lazy">
+                        <img src="images/Photo.jpg" alt="Mohamed Adel" class="profile-img" loading="lazy"
+                            decoding="async">
                     </div>
                 </div>
                 <div class="about-text fade-in">
@@ -255,7 +281,8 @@
                 </div>
                 <div class="project-card fade-in" data-category="automation">
                     <div class="project-content">
-                        <img src="images/Faculty.jpg" alt="Faculty Logo" class="card-floating-icon" loading="lazy">
+                        <img src="images/Faculty.jpg" alt="Faculty Logo" class="card-floating-icon" loading="lazy"
+                            decoding="async">
                         <h3 style="margin-bottom: 5px; margin-top: 25px;">Graduation Project</h3>
                         <p class="project-subtitle">Smart Water Pumping System</p>
                         <p>Designed and implemented a smart, energy-efficient water pumping system integrating Solar PV,
@@ -276,7 +303,8 @@
                 </div>
                 <div class="project-card fade-in" data-category="design">
                     <div class="project-content">
-                        <img src="images/Eduneers.jpg" alt="Eduneers Logo" class="card-floating-icon" loading="lazy">
+                        <img src="images/Eduneers.jpg" alt="Eduneers Logo" class="card-floating-icon" loading="lazy"
+                            decoding="async">
                         <h3 style="margin-bottom: 5px; margin-top: 25px; white-space: nowrap;">Eduneers Advanced Diploma
                         </h3>
                         <p class="project-subtitle">Practical Training Project</p>
@@ -306,7 +334,7 @@
                 <div class="cert-card fade-in stagger-1">
                     <div class="cert-icon-wrapper" style="background: white; border-radius: 8px; padding: 4px;">
                         <img src="images/Udemy.jpg" alt="Udemy Logo"
-                            style="width: 100%; height: 100%; object-fit: contain;" loading="lazy">
+                            style="width: 100%; height: 100%; object-fit: contain;" loading="lazy" decoding="async">
                     </div>
                     <div class="cert-content">
                         <h3>Various Technical Courses</h3>
@@ -323,7 +351,7 @@
                 <div class="cert-card fade-in stagger-2">
                     <div class="cert-icon-wrapper" style="overflow: hidden; background: white;">
                         <img src="images/Eduneers.jpg" alt="Eduneers Logo"
-                            style="width: 100%; height: 100%; object-fit: contain;" loading="lazy">
+                            style="width: 100%; height: 100%; object-fit: contain;" loading="lazy" decoding="async">
                     </div>
                     <div class="cert-content">
                         <h3>Basic Diploma</h3>
@@ -340,7 +368,7 @@
                 <div class="cert-card fade-in stagger-3">
                     <div class="cert-icon-wrapper" style="background: white; border-radius: 8px; padding: 4px;">
                         <img src="images/HA.png" alt="HA Logo" style="width: 100%; height: 100%; object-fit: contain;"
-                            loading="lazy">
+                            loading="lazy" decoding="async">
                     </div>
                     <div class="cert-content">
                         <h3>Basic Control Course</h3>
@@ -487,7 +515,7 @@
                             site execution expertise. Highly reliable in critical situations.</p>
                         <div class="t-author">
                             <img src="https://ui-avatars.com/api/?name=Senior+Consultant&background=random" alt="Author"
-                                loading="lazy">
+                                loading="lazy" decoding="async">
                             <div>
                                 <h4 data-ar="مهندس استشاري أول">Senior Consultant</h4>
                                 <span data-ar="توصية لينكد إن">LinkedIn Recommendation</span>
@@ -502,7 +530,7 @@
                             drawings. A true asset to any construction team.</p>
                         <div class="t-author">
                             <img src="https://ui-avatars.com/api/?name=Project+Manager&background=random" alt="Author"
-                                loading="lazy">
+                                loading="lazy" decoding="async">
                             <div>
                                 <h4 data-ar="مدير مشروع">Project Manager</h4>
                                 <span data-ar="توصية لينكد إن">LinkedIn Recommendation</span>
@@ -537,14 +565,14 @@
             <div class="contact-wrapper">
                 <div class="contact-info fade-in">
                     <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope" aria-label="Email Address" role="img"></i>
                         <div>
                             <h3>Email</h3>
                             <a href="#" id="protected-email">Loading email...</a>
                         </div>
                     </div>
                     <div class="contact-item" id="linkedin-contact">
-                        <i class="fab fa-linkedin"></i>
+                        <i class="fab fa-linkedin" aria-label="LinkedIn Profile" role="img"></i>
                         <div>
                             <h3>LinkedIn</h3>
                             <a href="https://www.linkedin.com/in/mohamed-adel-shafei" target="_blank"
@@ -552,7 +580,7 @@
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fab fa-github"></i>
+                        <i class="fab fa-github" aria-label="GitHub Profile" role="img"></i>
                         <div>
                             <h3>GitHub</h3>
                             <a href="https://github.com/mohamed-adel-shafei" target="_blank"
@@ -560,7 +588,7 @@
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fab fa-whatsapp"></i>
+                        <i class="fab fa-whatsapp" aria-label="WhatsApp Contact" role="img"></i>
                         <div>
                             <h3>WhatsApp</h3>
                             <a href="https://wa.me/201018559587" target="_blank" rel="noopener noreferrer">Chat on
@@ -568,7 +596,7 @@
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <i class="fas fa-map-marker-alt" aria-label="Location Map" role="img"></i>
                         <div>
                             <h3>Location</h3>
                             <span>Cairo, Egypt</span>
@@ -581,7 +609,8 @@
                     <input type="hidden" name="access_key" value="54df8a96-9799-40ea-9e13-49e8535f74a6">
                     <input type="hidden" name="subject" value="New Contact from Portfolio Website">
                     <input type="checkbox" name="botcheck" class="hidden">
-                    <input type="text" name="honeypot" id="honeypot" class="hidden" tabindex="-1" autocomplete="off">
+                    <input type="text" name="honeypot" id="honeypot" style="display:none !important;" tabindex="-1"
+                        autocomplete="off">
 
                     <div class="form-group">
                         <input type="text" name="name" placeholder="Your Name" required>
@@ -592,7 +621,7 @@
                     <div class="form-group">
                         <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <button type="submit" class="btn btn-primary" aria-label="Submit Contact Form">Send Message</button>
                     <p id="form-result" style="display: none; margin-top: 10px;"></p>
                 </form>
             </div>
